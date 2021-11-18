@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h2>Crear nueva especie</h2>
+
+<form style="margin: 25px;" action="#" method="post">
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="person_id">Persona</label>
+    <select class="form-control" id="person_id" name="person">
+      <option value="1">Eduardo Mendez</option>
+      <option value="2">Luis Garcia</option>
+      <option value="3">Andres</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="animalType_id">Familia animal</label>
+    <select class="form-control" id="animalType_id" name="type">
+      <option value="1">Mamifero</option>
+      <option value="2">Reptil</option>
+      <option value="3">Ave</option>
+      <option value="4">Amfibio</option>
+      <option value="5">Insecto</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="species_id">Especie de animal</label>
+    <select class="form-control" id="species_id" name="specie">
+      <option value="1">Panthera Onca</option>
+      <option value="2">Panthera Leo</option>
+      <option value="3">Panthera Pardus</option>
+      <option value="4">Panthera Tigris</option>
+      <option value="5">Panthera Uncia</option>
+      <option value="5">Neofelis</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="gender_id">Genero del animal</label>
+    <select class="form-control" id="gender_id" name="gender">
+      <option value="1">Hembra</option>
+      <option value="2">Macho</option>
+      <option value="3">No Identificable</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="age_id">Edad del animal</label>
+    <select class="form-control" id="age_id" name="age">
+      <option value="1">Infancia</option>
+      <option value="2">Juventud</option>
+      <option value="3">Adulto</option>
+      <option value="4">Vejez</option>
+      <option value="5">No Identificable</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="destination_id">Edad del animal</label>
+    <select class="form-control" id="destination_id" name="destination">
+      <option value="1">Centro Veterinario</option>
+      <option value="2">Cautiverio</option>
+      <option value="3">Libertad</option>
+      <option value="4">Eutanacia</option>
+      <option value="5">Muerte</option>
+    </select>
+  </div>
+  <div class="form-group row" style="margin: 20px;">
+    <label for="condition" class="col-sm-2 col-form-label">Condicion</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="condition" id="condition" placeholder="Descripcion acerca el estado del animal">
+    </div>
+  </div>
+  <div class="form-group row" style="margin: 20px;">
+    <label for="weigth" class="col-sm-2 col-form-label">Peso</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="weigth" id="weigth" placeholder="Peso del ejemplar">
+    </div>
+  </div>
+  <div class="form-group row" style="margin: 20px;">
+    <label for="size" class="col-sm-2 col-form-label">Tamano</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" name="size" id="size" placeholder="Tamano del ejemplar">
+    </div>
+  </div>
+  <!-- <div class="form-group row" style="margin: 20px;">
+    <label for="exampleFormControlSelect1">Example select</label>
+    <select class="form-control" id="exampleFormControlSelect1">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div>
+
+  <div class="form-group row" style="margin: 20px;">
+    <label for="exampleFormControlSelect2">Example multiple select</label>
+    <select multiple class="form-control" id="exampleFormControlSelect2">
+      <option>1</option>
+      <option>2</option>
+      <option>3</option>
+      <option>4</option>
+      <option>5</option>
+    </select>
+  </div> -->
+
+  <div class="form-group row" style="margin: 20px;">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-dark">Registrar</button>
+    </div>
+  </div>
+</form>
+{% endblock %}

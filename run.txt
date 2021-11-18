@@ -1,0 +1,4 @@
+python .\src\app.py
+.\env\Scripts\activate.bat
+
+docker-compose up/stop
