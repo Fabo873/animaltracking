@@ -7,83 +7,66 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("index.html")
+    
 
-# OK
-@app.route("/destination", methods=["GET","POST"])
-def destination():
-    if request.method == "POST":
-        # if request.form["destination"]
-        pload = {"name":request.form["destination"]
-        }
-        r = requests.post('http://127.0.0.1:5000/destination', json = pload)
-        print(r.text)
-        return render_template("index.html")
-    else:
-        return render_template("destination.html")
+@app.route("/register", methods=["GET","POST"])
+def register():
+    url_person = 'http://127.0.0.1:5000/person'
+    resp = requests.get(url=url_person)
+    persons = resp.json()['data']
 
-# OK
-@app.route("/reception", methods=["GET","POST"])
-def reception():
-    if request.method == "POST":
-        # if request.form["specimen"] and request.form["reciever"] and request.form["location"]
-        pload = {"specimen_id":request.form["specimen"],
-        "deliver_person":request.form["deliverer"],
-        "reciever_person_id":request.form["reciever"],
-        "location_id":request.form["location"]
-        }
-        r = requests.post('http://127.0.0.1:5000/reception', json = pload)
-        print(r.text)
-        return render_template("index.html")
-    else:
-        return render_template("reception.html")
+    url_type = 'http://127.0.0.1:5000/type'
+    resp = requests.get(url=url_type)
+    types = resp.json()['data']
 
-@app.route("/specimen", methods=["GET","POST"])
-def specimen():
-    url = 'http://127.0.0.1:5000/person'
+    url_species = 'http://127.0.0.1:5000/species'
+    resp = requests.get(url=url_species)
+    species = resp.json()['data']
 
-    resp = requests.get(url=url)
-    data = resp.json()
-    print(data)
+    url_gender = 'http://127.0.0.1:5000/gender'
+    resp = requests.get(url=url_gender)
+    genders = resp.json()['data']
+
+    url_age = 'http://127.0.0.1:5000/age'
+    resp = requests.get(url=url_age)
+    ages = resp.json()['data']
+
+    url_destination = 'http://127.0.0.1:5000/destination'
+    resp = requests.get(url=url_destination)
+    destinations = resp.json()['data']
 
     if request.method == "POST":
-        # if request.form["person"] and request.form["type"] and request.form["gender"] and request.form["age"] and request.form["destination"]
-        pload = {"person_id":request.form["person"],
-        "animalType_id":request.form["type"],
-        "species_id":request.form["specie"],
-        "gender_id":request.form["gender"],
-        "age_id":request.form["age"],
-        "destination_id":request.form["destination"],
-        "condition":request.form["condition"],
-        "weigth":request.form["weigth"],
-        "size":request.form["size"]
-        }
+        if request.method == "POST":
+            if request.form["person"] and request.form["type"] and request.form["gender"] and request.form["age"] and request.form["destination"]:
+                pload_specimen = {"person_id":request.form["person"],
+                "animalType_id":request.form["type"],
+                "species_id":request.form["specie"],
+                "gender_id":request.form["gender"],
+                "age_id":request.form["age"],
+                "destination_id":request.form["destination"],
+                "condition":request.form["condition"],
+                "weigth":request.form["weigth"],
+                "size":request.form["size"]
+                }
 
-        print(pload)
-        print(type(pload))
-        r = requests.post('http://127.0.0.1:5000/specimen', json = pload)
-        print(r.text)
-        return render_template("index.html")
+                r = requests.post('http://127.0.0.1:5000/specimen', json = pload_specimen)
+                print(r.status_code)
+                # print(r.json()['data']['id'])
+                if r.status_code < 399:
+                    pload_reception = {"specimen_id":r.json()['data']['id'],
+                    "deliver_person":request.form["deliverer"],
+                    "reciever_person_id":request.form["person"],
+                    "location_id":request.form["location"]
+                    }
+
+                    r = requests.post('http://127.0.0.1:5000/reception', json = pload_reception)
+                    # print(r.json()['data']['id'])
+
+                    return render_template("index.html", message = r.json()['message'])
+                else:
+                    return render_template("index.html", message = r.json()['message'])
     else:
-        return render_template("specimen.html")
-
-@app.route("/tracking", methods=["GET","POST"])
-def tracking():
-    if request.method == "POST":
-        # if request.form["person"] and request.form["type"] and request.form["gender"] and request.form["age"] and request.form["destination"]
-        pload = {"specimen_id":request.form["specimen"],
-        "date":request.form["date"],
-        "reviewed":request.form["specie"],
-        "destination_id":request.form["destination"],
-        "condition":request.form["condition"],
-        "weigth":request.form["weigth"],
-        "size":request.form["size"]
-        }
-        r = requests.post('http://127.0.0.1:5000/tracking', json = pload)
-        print(r.text)
-        return render_template("index.html")
-    else:
-        return render_template("tracking.html")
-
+        return render_template("register.html", persons=persons, types = types,species=species, genders=genders, ages=ages, destinations=destinations )
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080, debug=True)
