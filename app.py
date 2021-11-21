@@ -7,7 +7,10 @@ app = Flask(__name__)
 @app.route("/")
 def index():
     return render_template("index.html")
-    
+
+@app.route("/tracking")
+def tracking():
+    return render_template("tracking.html")    
 
 @app.route("/register", methods=["GET","POST"])
 def register():
@@ -51,7 +54,6 @@ def register():
 
                 r = requests.post('http://127.0.0.1:5000/specimen', json = pload_specimen)
                 print(r.status_code)
-                # print(r.json()['data']['id'])
                 if r.status_code < 399:
                     pload_reception = {"specimen_id":r.json()['data']['id'],
                     "deliver_person":request.form["deliverer"],
@@ -60,13 +62,13 @@ def register():
                     }
 
                     r = requests.post('http://127.0.0.1:5000/reception', json = pload_reception)
-                    # print(r.json()['data']['id'])
 
                     return render_template("index.html", message = r.json()['message'])
                 else:
                     return render_template("index.html", message = r.json()['message'])
     else:
         return render_template("register.html", persons=persons, types = types,species=species, genders=genders, ages=ages, destinations=destinations )
+        # return render_template("register.html")
 
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080, debug=True)
