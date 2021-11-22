@@ -10,7 +10,11 @@ def index():
 
 @app.route("/tracking")
 def tracking():
-    return render_template("tracking.html")    
+    return render_template("tracking.html")
+
+@app.route("/reports")
+def reports():
+    return render_template("reports.html")
 
 @app.route("/register", methods=["GET","POST"])
 def register():
