@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, redirect, flash
+from flask.helpers import url_for
 import requests
 from datetime import datetime
-
+import helper
 app = Flask(__name__)
 
 @app.route("/")
@@ -11,45 +12,19 @@ def index():
 # New register
 @app.route("/register", methods=["GET","POST"])
 def register():
-    url_person = 'http://127.0.0.1:5000/person'
-    resp = requests.get(url=url_person)
-    persons = resp.json()['data']
-
-    url_type = 'http://127.0.0.1:5000/type'
-    resp = requests.get(url=url_type)
-    types = resp.json()['data']
-
-    url_species = 'http://127.0.0.1:5000/species'
-    resp = requests.get(url=url_species)
-    species = resp.json()['data']
-
-    url_gender = 'http://127.0.0.1:5000/gender'
-    resp = requests.get(url=url_gender)
-    genders = resp.json()['data']
-
-    url_age = 'http://127.0.0.1:5000/age'
-    resp = requests.get(url=url_age)
-    ages = resp.json()['data']
-
-    url_destination = 'http://127.0.0.1:5000/destination'
-    resp = requests.get(url=url_destination)
-    destinations = resp.json()['data']
-
-    url_states = 'http://127.0.0.1:5000/state'
-    resp = requests.get(url=url_states)
-    states = resp.json()['data']
-
-    url_municipalities = 'http://127.0.0.1:5000/municipality'
-    resp = requests.get(url=url_municipalities)
-    cities = resp.json()['data']
-
-    url_neig = 'http://127.0.0.1:5000/neighborhood'
-    resp = requests.get(url=url_neig)
-    neig = resp.json()['data']
+    
+    data = helper.registerData()
 
     if request.method == "POST":
-        
         if request.form["person"] and request.form["type"] and request.form["gender"] and request.form["age"] and request.form["destination"] and request.form["specie"]:
+            
+            weigth = None
+            size = None
+            if request.form["weigth"]:
+                weigth = float(request.form["weigth"])
+            if request.form["size"]:
+                size = float(request.form["size"])
+            
             pload_specimen = {"person_id":request.form["person"],
             "animalType_id":request.form["type"],
             "species_id":request.form["specie"],
@@ -57,43 +32,52 @@ def register():
             "age_id":request.form["age"],
             "destination_id":request.form["destination"],
             "condition":request.form["condition"],
-            "weigth":request.form["weigth"],
-            "size":request.form["size"]
+            "weigth":weigth,
+            "size":size
             }
 
             r = requests.post('http://127.0.0.1:5000/specimen', json = pload_specimen)
             print(r.status_code)
-            return render_template("index.html", message = r.json()['message'])
-            # if r.status_code < 399:
-            #     pload_reception = {"specimen_id":r.json()['data']['id'],
-            #     "deliver_person":request.form["deliverer"],
-            #     "reciever_person_id":request.form["person"],
-            #     "neighborhood_id":request.form["location"]
-            #     }
+            if r.status_code < 399:
+                pload_reception = {
+                    "specimen_id":r.json()['data']['id'],
+                    "deliver_person":request.form["deliverer"],
+                    "reciever_person_id":request.form["person"],
+                    "neighborhood_id":request.form["neighborhood"]
+                }
 
-            #     r = requests.post('http://127.0.0.1:5000/reception', json = pload_reception)
+                r = requests.post('http://127.0.0.1:5000/reception', json = pload_reception)
 
-            #     return render_template("index.html", message = r.json()['message'])
-            # else:
-            #     return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Registro creado satisfactoriamente!", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("register.html", persons=persons, types = types,species=species, genders=genders, ages=ages, destinations=destinations,states=states,cities=cities, neig=neig)
+        return render_template("register.html", 
+            persons=data[0], 
+            types = data[1],
+            species=data[2], 
+            genders=data[3], 
+            ages=data[4], 
+            destinations=data[5],
+            states=data[6],
+            cities=data[7],
+            neig=data[8]
+        )
 
 # Tracking and final destination
 @app.route("/tracking", methods=["GET","POST"])
 def tracking():
-    url_destination = 'http://127.0.0.1:5000/destination'
-    resp = requests.get(url=url_destination)
-    destinations = resp.json()['data']
-    
-    url_specimen = 'http://127.0.0.1:5000/specimen'
-    resp = requests.get(url=url_specimen)
-    specimens = resp.json()['data']
 
-    if specimens:
-        specimens = specimens[::-1]
+    data = helper.trackingData()
+
+    if data[1]:
+        specimens = data[1][::-1]
     else:
-        return render_template("tracking.html", destinations=destinations, specimens=specimens)
+        return render_template("tracking.html", 
+            destinations=data[0], 
+            specimens=data[1]
+        )
+
     if request.method == "POST":
         if request.form["destination"] and request.form["folio"] and request.form["date"] :
             
@@ -108,7 +92,7 @@ def tracking():
                 size = float(request.form["size"])
 
             if not specimens:
-                return redirect(request.url, message = "Specimen not found!")
+                return render_template("index.html", message = "Specimen no encontrado!", category = "danger")
             date = datetime.strptime(request.form["date"], '%Y-%m-%d')
             pload = {
                 "specimen_id":specimens[0]["id"],
@@ -123,26 +107,27 @@ def tracking():
             r = requests.post('http://127.0.0.1:5000/tracking', json = pload)
             print(r.status_code)
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Seguimiento creado satisfactoriamente", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("tracking.html", destinations=destinations, specimens=specimens )
+        return render_template("tracking.html", 
+            destinations=data[0], 
+            specimens=data[1]
+        )
         
 @app.route("/destination", methods=["GET","POST"])
 def destination():
-    url_destination = 'http://127.0.0.1:5000/destination'
-    resp = requests.get(url=url_destination)
-    destinations = resp.json()['data']
 
-    url_specimen = 'http://127.0.0.1:5000/specimen'
-    resp = requests.get(url=url_specimen)
-    specimens = resp.json()['data']
-    
-    if specimens:
-        specimens = specimens[::-1]
+    data = helper.destinationData()
+
+    if data[1]:
+        specimens = data[1][::-1]
     else:
-        return render_template("tracking.html", destinations=destinations, specimens=specimens)
+        return render_template("destination.html", 
+            destinations=data[0], 
+            specimens=data[1]
+        )
 
     if request.method == "POST":
         if request.form["destination"] and request.form["folio"]:
@@ -169,11 +154,14 @@ def destination():
             r = requests.post('http://127.0.0.1:5000/final', json = pload)
             print(r.status_code)
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Destino final creado!", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("destination.html", destinations=destinations, specimens=specimens )
+        return render_template("destination.html", 
+            destinations=data[0], 
+            specimens=data[1]
+        )
 
 # Reports
 @app.route("/reports", methods=["GET","POST"])
@@ -191,9 +179,9 @@ def newDestination():
             r = requests.post('http://127.0.0.1:5000/destination', json = pload)
             print(r.status_code)
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nuevo destino agregado", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
         return render_template("newDestination.html")
 
@@ -204,11 +192,11 @@ def newGender():
             pload = {"name":request.form["gender"]}
 
             r = requests.post('http://127.0.0.1:5000/gender', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nuevo genero agregado", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
         return render_template("newGender.html")
 
@@ -219,11 +207,11 @@ def newAge():
             pload = {"name":request.form["age"]}
 
             r = requests.post('http://127.0.0.1:5000/age', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nueva edad agregada", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
         return render_template("newAge.html")
 
@@ -235,19 +223,18 @@ def newFamily():
             pload = {"name":request.form["family"]}
 
             r = requests.post('http://127.0.0.1:5000/type', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nueva familia agregada",category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
         return render_template("newFamily.html")
 
 @app.route("/newSpecie", methods=["GET","POST"])
 def newSpecie():
-    url_type = 'http://127.0.0.1:5000/type'
-    resp = requests.get(url=url_type)
-    types = resp.json()['data']
+    
+    data = helper.speciesData()
 
     if request.method == "POST":
         if request.form["common_name"] and request.form["scientific_name"] and request.form["type"]:
@@ -258,23 +245,17 @@ def newSpecie():
             }
 
             r = requests.post('http://127.0.0.1:5000/species', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nuevas especie agregada", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("newSpecie.html",types = types)
+        return render_template("newSpecie.html",types = data[0])
 
 @app.route("/newNeighborhood", methods=["GET","POST"])
 def newNeighborhood():
-    url_states = 'http://127.0.0.1:5000/state'
-    resp = requests.get(url=url_states)
-    states = resp.json()['data']
-
-    url_municipalities = 'http://127.0.0.1:5000/municipality'
-    resp = requests.get(url=url_municipalities)
-    cities = resp.json()['data']
+    data = helper.neighborhoodData()
 
     if request.method == "POST":
         if request.form["neighborhood"] and request.form["city"]:
@@ -284,13 +265,16 @@ def newNeighborhood():
             }
 
             r = requests.post('http://127.0.0.1:5000/neighborhood', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = "Nuevo barrio agregado", category = "success")
             else:
-                return render_template("index.html", message = r.json()['message'])
+                return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("newNeighborhood.html",states=states,cities=cities)
+        return render_template("newNeighborhood.html",
+            states=data[0],
+            cities=data[1]
+        )
 
 # main
 if __name__ == '__main__':
