@@ -1,61 +1,75 @@
 {% extends "layout.html" %} {% block body %}
 <h2>Crear un nuevo registro</h2>
 <form style="margin: 25px" action="#" method="post">
+
   <div><h3>Especimen</h3></div>
+
   <div class="form-group row" style="margin: 20px">
-    <label for="person_id">Persona</label>
-    <select class="form-control" id="person_id" name="person">
-      {% for i in persons%}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-    </select>
+    <label for="person_id" class="col-sm-2 col-form-label">Persona que recive el ejemplar</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="person_id" name="person" data-live-search="true">
+        {% for i in persons%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
+<!-- Family and specie -->
+  <div class="form-group row" style="margin: 20px">
+    <label for="type_id" class="col-sm-2 col-form-label">Familia animal</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="type_id" name="type" onchange="update_family(this.value)" data-live-search="true">
+        <option value=""></option>
+        {% for i in types%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group row" style="margin: 20px">
+    <label for="species_id" class="col-sm-2 col-form-label">Especie de animal</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="species_id" name="specie" data-live-search="true">
+      </select>
+    </div>
+  </div>
 <!--  -->
+
   <div class="form-group row" style="margin: 20px">
-    <label for="animalType_id">Familia animal</label>
-    <select class="form-control" id="animalType_id" name="type" onchange="update_dropdown(this.value)" >
-      <option value=""></option>
-      {% for i in types%}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-    </select>
+    <label for="gender_id" class="col-sm-2 col-form-label">Genero del animal</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="gender_id" name="gender" data-live-search="true">
+        {% for i in genders%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="species_id">Especie de animal</label>
-    <select class="form-control" id="species_id" name="specie" >
-
-    </select>
-  </div>
-<!--  -->
-
-  <div class="form-group row" style="margin: 20px">
-    <label for="gender_id">Genero del animal</label>
-    <select class="form-control" id="gender_id" name="gender">
-      {% for i in genders%}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-    </select>
+    <label for="age_id" class="col-sm-2 col-form-label">Edad del animal</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="age_id" name="age" data-live-search="true">
+        {% for i in ages%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="age_id">Edad del animal</label>
-    <select class="form-control" id="age_id" name="age">
-      {% for i in ages%}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-    </select>
+    <label for="destination_id" class="col-sm-2 col-form-label">Destino</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="destination_id" name="destination" data-live-search="true">
+        {% for i in destinations%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
   </div>
 
-  <div class="form-group row" style="margin: 20px">
-    <label for="destination_id">Destino</label>
-    <select class="form-control" id="destination_id" name="destination">
-      {% for i in destinations%}
-      <option value="{{i.id}}">{{i.name}}</option>
-      {% endfor %}
-    </select>
-  </div>
   <div class="form-group row" style="margin: 20px">
     <label for="condition" class="col-sm-2 col-form-label">Condicion</label>
     <div class="col-sm-10">
@@ -81,19 +95,21 @@
     </div>
   </div>
   <div class="form-group row" style="margin: 20px">
-    <label for="size" class="col-sm-2 col-form-label">Tamano</label>
+    <label for="size_id" class="col-sm-2 col-form-label">Tamano</label>
     <div class="col-sm-10">
       <input
         type="text"
         class="form-control"
         name="size"
-        id="size"
+        id="size_id"
         placeholder="Tamano del ejemplar"
       />
     </div>
   </div>
 
-  <div><h3>Recepcion</h3></div>
+  <div style="margin-top: 75px">
+    <h3>Recepcion</h3>
+  </div>
 
   <div class="form-group row" style="margin: 20px">
     <label for="deliver_person" class="col-sm-2 col-form-label"
@@ -105,25 +121,42 @@
         class="form-control"
         name="deliverer"
         id="deliver_person"
-        placeholder="String nombre"
+        placeholder="Nombre"
       />
+    </div>
+  </div>
+
+  <!-- Location -->
+  <div class="form-group row" style="margin: 20px">
+    <label for="state_id" class="col-sm-2 col-form-label">Estado</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="state_id" name="state" onchange="update_state(this.value)" data-live-search="true">
+        <option value=""></option>
+        {% for i in states%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
     </div>
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="location_id" class="col-sm-2 col-form-label">Locacion</label>
+    <label for="city_id" class="col-sm-2 col-form-label">Municipalidad</label>
     <div class="col-sm-10">
-      <input
-        type="text"
-        class="form-control"
-        name="location"
-        id="location_id"
-        placeholder="Colotlan id 140250001"
-      />
+      <select class="form-control" id="city_id" name="city">
+      </select>
     </div>
   </div>
 
-  <div class="form-group row" style="margin: 20px; margin-top: 50px;">
+  <div class="form-group row" style="margin: 20px">
+    <label for="neighborhood_id" class="col-sm-2 col-form-label">Barrio</label>
+    <div class="col-sm-10">
+      <select class="form-control" id="neighborhood_id" name="neighborhood">
+      </select>
+    </div>
+  </div>
+<!--  -->
+
+  <div class="form-group row" style="margin: 30px; margin-top: 50px;">
     <div class="col-sm-10">
       <button type="submit" class="btn btn-dark btn-lg float-right">Registrar</button>
     </div>
@@ -131,8 +164,8 @@
 </form>
 
 <script language="javascript" type="text/javascript">
-   function update_dropdown(value ) {
-    console.log("Llamando")
+  function update_family(value ) {
+    console.log("Updating animal families")
     const species = JSON.parse('{{species|tojson}}');
     $("#species_id").empty();
     for (let i= 0; i< species.length; i++) {
@@ -142,5 +175,28 @@
     }
   }
 
+  function update_state(value){
+    console.log("Updating state cities")
+    const cities = JSON.parse('{{cities|tojson}}');
+    console.log(value)
+    $("#city_id").empty();
+    for (let i= 0; i< cities.length; i++) {
+      if ( cities[i].id == value){
+        console.log(cities[i].name)
+        $("#city_id").append("<option value=\""+cities[i].id+"\">"+cities[i].name+"</option>");
+      }
+    }
+  }
+
+</script>
+<script>
+  $(document).ready(function (){
+    $("#person_id").selectpicker();
+    $("#type_id").selectpicker();
+    $("#species_id").selectpicker();
+    $("#gender_id").selectpicker();
+    $("#age_id").selectpicker();
+    $("#destination_id").selectpicker();
+  });
 </script>
 {% endblock %}

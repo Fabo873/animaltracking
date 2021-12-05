@@ -1,0 +1,25 @@
+{% extends "layout.html" %} {% block body %}
+
+<form style="margin: 25px" action="#" method="post">
+
+  <h2>Crear nuevo destino</h2>
+
+  <div class="form-group row" style="margin: 20px">
+    <label for="name" class="col-sm-2 col-form-label">Destino</label>
+    <div class="col-sm-10">
+      <input
+        type="text"
+        class="form-control"
+        name="destination"
+        id="destination_id"
+        placeholder="Ingrese el nuevo destino"
+      />
+    </div>
+  </div>
+  <div class="form-group row" style="margin: 20px">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-dark">Registrar</button>
+    </div>
+  </div>
+</form>
+{% endblock %}
