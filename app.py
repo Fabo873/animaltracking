@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request, json
-from werkzeug.utils import redirect
+from flask import Flask, render_template, request, redirect, flash
 import requests
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -43,7 +43,7 @@ def register():
     resp = requests.get(url=url_municipalities)
     cities = resp.json()['data']
 
-    url_neig = 'http://127.0.0.1:5000/state'
+    url_neig = 'http://127.0.0.1:5000/neighborhood'
     resp = requests.get(url=url_neig)
     neig = resp.json()['data']
 
@@ -85,16 +85,38 @@ def tracking():
     url_destination = 'http://127.0.0.1:5000/destination'
     resp = requests.get(url=url_destination)
     destinations = resp.json()['data']
+    
+    url_specimen = 'http://127.0.0.1:5000/specimen'
+    resp = requests.get(url=url_specimen)
+    specimens = resp.json()['data']
 
+    if specimens:
+        specimens = specimens[::-1]
+    else:
+        return render_template("tracking.html", destinations=destinations, specimens=specimens)
     if request.method == "POST":
-        if request.form["destination"] and request.form["specimen"] and request.form["date"] :
+        if request.form["destination"] and request.form["folio"] and request.form["date"] :
+            
+            url_specimen = 'http://127.0.0.1:5000/specimen?folio={}'.format(request.form["folio"])
+            resp = requests.get(url=url_specimen)
+            specimens = resp.json()['data']
+            weigth = None
+            size = None
+            if request.form["weigth"]:
+                weigth = float(request.form["weigth"])
+            if request.form["size"]:
+                size = float(request.form["size"])
+
+            if not specimens:
+                return redirect(request.url, message = "Specimen not found!")
+            date = datetime.strptime(request.form["date"], '%Y-%m-%d')
             pload = {
-                "specimen_id":request.form["specimen"],
-                "date":request.form["date"],
+                "specimen_id":specimens[0]["id"],
+                "date":date.strftime("%y-%m-%d"),
                 "reviewed":"false",
+                "weight": weigth,
+                "size" : size,
                 "condition":request.form["condition"],
-                "weigth":request.form["weigth"],
-                "size":request.form["size"],
                 "destination_id":request.form["destination"]
             }
             print(pload)
@@ -105,7 +127,7 @@ def tracking():
             else:
                 return render_template("index.html", message = r.json()['message'])
     else:
-        return render_template("tracking.html", destinations=destinations )
+        return render_template("tracking.html", destinations=destinations, specimens=specimens )
         
 @app.route("/destination", methods=["GET","POST"])
 def destination():
@@ -113,14 +135,34 @@ def destination():
     resp = requests.get(url=url_destination)
     destinations = resp.json()['data']
 
+    url_specimen = 'http://127.0.0.1:5000/specimen'
+    resp = requests.get(url=url_specimen)
+    specimens = resp.json()['data']
+    
+    if specimens:
+        specimens = specimens[::-1]
+    else:
+        return render_template("tracking.html", destinations=destinations, specimens=specimens)
+
     if request.method == "POST":
-        if request.form["destination"] and request.form["specimen"]:
+        if request.form["destination"] and request.form["folio"]:
+            url_specimen = 'http://127.0.0.1:5000/specimen?folio={}'.format(request.form["folio"])
+            resp = requests.get(url=url_specimen)
+            specimens = resp.json()['data']
+
+            weigth = None
+            size = None
+            if request.form["weigth"]:
+                weigth = float(request.form["weigth"])
+            if request.form["size"]:
+                size = float(request.form["size"])
+
             pload = {
-                "specimen_id":request.form["specimen"],
+                "specimen_id":specimens[0]["id"],
                 "destination_id":request.form["destination"],
                 "condition":request.form["condition"],
-                "weigth":request.form["weigth"],
-                "size":request.form["size"],
+                "weigth":weigth,
+                "size":size,
                 "notes":request.form["notes"]
             }
 
@@ -131,7 +173,7 @@ def destination():
             else:
                 return render_template("index.html", message = r.json()['message'])
     else:
-        return render_template("destination.html", destinations=destinations )
+        return render_template("destination.html", destinations=destinations, specimens=specimens )
 
 # Reports
 @app.route("/reports", methods=["GET","POST"])
@@ -223,6 +265,32 @@ def newSpecie():
                 return render_template("index.html", message = r.json()['message'])
     else:
         return render_template("newSpecie.html",types = types)
+
+@app.route("/newNeighborhood", methods=["GET","POST"])
+def newNeighborhood():
+    url_states = 'http://127.0.0.1:5000/state'
+    resp = requests.get(url=url_states)
+    states = resp.json()['data']
+
+    url_municipalities = 'http://127.0.0.1:5000/municipality'
+    resp = requests.get(url=url_municipalities)
+    cities = resp.json()['data']
+
+    if request.method == "POST":
+        if request.form["neighborhood"] and request.form["city"]:
+            pload = {
+                "name":request.form["neighborhood"],
+                "municipality_id":request.form["city"],        
+            }
+
+            r = requests.post('http://127.0.0.1:5000/neighborhood', json = pload)
+            print(r.status_code)
+            if r.status_code < 399:
+                return render_template("index.html", message = r.json()['message'])
+            else:
+                return render_template("index.html", message = r.json()['message'])
+    else:
+        return render_template("newNeighborhood.html",states=states,cities=cities)
 
 # main
 if __name__ == '__main__':

@@ -1,0 +1,76 @@
+{% extends "layout.html" %} {% block body %}
+
+<form style="margin: 25px" action="#" method="post">
+
+  <h2>Agregar barrio</h2>
+
+  <div class="form-group row" style="margin: 20px">
+    <label for="state_id" class="col-sm-2 col-form-label">Estado</label>
+    <div class="col-sm-10">
+      <select class="form-control" 
+        id="state_id" 
+        name="state" 
+        data-live-search="true" 
+        onchange="update_state(this.value)" 
+      >
+        <option value="" selected disabled hidden>Nada seleccionado</option>
+        {% for i in states%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group row" style="margin: 20px">
+    <label for="city_id" class="col-sm-2 col-form-label">Municipalidad</label>
+    <div class="col-sm-10">
+      <select class="form-control" 
+        id="city_id" 
+        name="city" 
+        data-live-search="true" 
+        onchange="update_neighborhood(this.value)"
+      >
+      <option value="" selected disabled hidden>Nada seleccionado</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="form-group row" style="margin: 20px">
+    <label for="neighborhood_id" class="col-sm-2 col-form-label">Barrio</label>
+    <div class="col-sm-10">
+      <input
+        type="text"
+        class="form-control"
+        name="neighborhood"
+        id="neighborhood_id"
+        placeholder="Barrio"
+      />
+    </div>
+  </div>
+  
+  <div class="form-group row" style="margin: 20px">
+    <div class="col-sm-10">
+      <button type="submit" class="btn btn-dark">Registrar</button>
+    </div>
+  </div>
+  <!--  -->
+</form>
+
+<script>
+  function update_state(value){
+    // console.log("Updating state cities")
+    const cities = JSON.parse('{{cities|tojson}}');
+    $("#city_id").empty();
+    for (let i= 0; i< cities.length; i++) {
+      if ( cities[i].state.id == value){
+        $("#city_id").append("<option value=\""+cities[i].id+"\">"+cities[i].name+"</option>");
+      }
+    }
+  }
+
+  $(document).ready(function (){
+    $("#state_id").selectpicker();
+    $("#city_id").selectpicker();
+  });
+</script>
+{% endblock %}
