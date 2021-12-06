@@ -1,0 +1,23 @@
+.layout-body {
+    background-color: whitesmoke;
+}
+
+.navbar {
+    background: linear-gradient(296.51deg, #0059A8 0%, green 100%) !important;
+    box-shadow: 3px 8px 8px 0 rgba(0, 0, 0, 0.6);
+    border-bottom-left-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
+
+.nav-item-link {
+    color: rgb(219, 219, 219) !important;
+}
+
+.nav-item-link:hover {
+    color: white;
+}
+
+.nav-item-style:hover {
+    background-color: rgb(1, 73, 1);
+    border-radius: 7px;
+}
