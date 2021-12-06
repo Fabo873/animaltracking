@@ -1,0 +1,60 @@
+.register-btn {
+    background-color: green !important;
+    box-shadow: 3px 8px 8px 0 rgba(0, 0, 0, 0.6) !important;
+    border: green;
+}
+.register-btn:hover {
+    background-color: #0059A8 !important;
+}
+.register-title {
+    font-size: 2.5rem;
+}
+.register-title-div {
+    align-self: center;
+    text-align: center;
+    color: #fff;
+    width: fit-content;
+    border-radius: 7px;
+    padding: 10px;
+    font-size: 2.7rem;
+    background: linear-gradient(296.51deg, rgb(0, 80, 0) 0%, green 100%) !important;
+    box-shadow: 3px 4px 4px 0 rgba(0, 0, 0, 0.6) !important;
+}
+form {
+    background-color: rgba(0, 128, 0, 0.164);
+    border-radius: 7px;
+    padding: 20px;
+    box-shadow: 3px 8px 8px 0 rgba(0, 0, 0, 0.6) !important;
+}
+.col-form-label {
+    background-color: rgba(0, 128, 0, 0.233);
+    border-radius: 7px;
+    box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.2) !important;
+}
+.form-control {
+    border-radius: 7px;
+    box-shadow: 2px 4px 4px 0 rgba(0, 0, 0, 0.2) !important;
+}
+.form-control:hover {
+    color: #0059A8;
+    background-color: rgb(233, 233, 233);
+}
+/*
+.form-group {
+    
+    border-radius: 7px;
+    color: white;
+}
+.form-control {
+    background: rgb(22, 22, 22) !important;
+    border: none !important;
+}
+select {
+    color: white !important;
+}
+select > option {
+    color: white !important;
+}
+option {
+    color: white !important;
+}*/
