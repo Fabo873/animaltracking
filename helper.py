@@ -104,3 +104,14 @@ def neighborhoodData():
   data.append(cities)
 
   return data
+
+def reportsData():
+  
+  data = []
+  
+  url_specimen = 'http://127.0.0.1:5000/specimen'
+  resp = requests.get(url=url_specimen)
+  specimens = resp.json()['data']
+  data.append(specimens)
+
+  return data
