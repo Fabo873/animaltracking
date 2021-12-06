@@ -166,7 +166,10 @@ def destination():
 # Reports
 @app.route("/reports", methods=["GET","POST"])
 def reports():
-    return render_template("reports.html")
+
+    data = helper.reportsData()
+
+    return render_template("reports.html", specimens = data[0])
 
 
 # Add new destination, gender, age, family and species types
