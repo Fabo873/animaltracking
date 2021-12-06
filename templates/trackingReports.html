@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h1>{{message}}</h1>
+<div class="row row-cols-1 row-cols-md-4 g-4">
+  {% for i in trackings%}
+    <div class="col">
+      <div class="card" style="width: 18rem;">
+        <!-- <img src="..." class="card-img-top" alt="..."> -->
+          <div class="card-body">
+            <!-- <option value="{{i.folio}}">{{i.folio}}</option> -->
+            <h5 class="card-title">Folio - {{i.specimen.folio}} </h5>
+          </div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item">Fecha de creacion : {{i.date}}</li>
+            <li class="list-group-item">{{i.specimen.person.name}} {{i.specimen.person.first_lastname}}</li>
+            <li class="list-group-item">Tipo : {{i.specimen.animalType.name}}</li>
+            <li class="list-group-item">Especie : {{i.specimen.species.common_name}} </li>
+            <li class="list-group-item">Genero : {{i.specimen.gender.name}}</li>
+            <li class="list-group-item">Edad : {{i.specimen.age.name}}</li>
+            <li class="list-group-item">Destino : {{i.destination.name}}</li>
+            <li class="list-group-item">Peso: {{i.weigth}}kg, Tamano : {{i.size}}</li>
+          </ul>
+          <div class="card-body">
+            <p class="card-text">{{i.condition}}</p>
+          </div>
+      </div>
+    </div>
+  {% endfor %}
+
+</div>
+{% endblock %}

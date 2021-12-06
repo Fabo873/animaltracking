@@ -105,11 +105,54 @@ def neighborhoodData():
 
   return data
 
-def reportsData():
+def specimenReportsData(person_id:int = None, species_id:int  = None, gender_id:int = None, age_id:int = None):
+  
+  data = []
+  parameters = {}
+
+  if person_id:
+    parameters["person"]=person_id
+  if species_id:
+    parameters["species"]=species_id
+  if gender_id:
+    parameters["gender"]=gender_id
+  if age_id:
+    parameters["age"]=age_id
+  
+  url_specimen = 'http://127.0.0.1:5000/specimen'
+  resp = requests.get(url=url_specimen, params=parameters)
+  specimens = resp.json()['data']
+  data.append(specimens)
+
+  return data
+
+def trackingReportsData(person_id:int = None, species_id:int  = None, gender_id:int = None, age_id:int = None):
+  
+  data = []
+  parameters = {}
+  
+  url_specimen = 'http://127.0.0.1:5000/tracking'
+
+  if person_id:
+    parameters["person"]=person_id
+  if species_id:
+    parameters["species"]=species_id
+  if gender_id:
+    parameters["gender"]=gender_id
+  if age_id:
+    parameters["age"]=age_id
+
+  resp = requests.get(url=url_specimen, params=parameters)
+  specimens = resp.json()['data']
+  data.append(specimens)
+
+  return data
+
+def finalDestinationReportsData():
   
   data = []
   
-  url_specimen = 'http://127.0.0.1:5000/specimen'
+  url_specimen = 'http://127.0.0.1:5000/final'
   resp = requests.get(url=url_specimen)
   specimens = resp.json()['data']
   data.append(specimens)

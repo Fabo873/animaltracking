@@ -164,12 +164,30 @@ def destination():
         )
 
 # Reports
-@app.route("/reports", methods=["GET","POST"])
-def reports():
+@app.route("/specimenReports", methods=["GET","POST"])
+def specimenReports():
+    person_id = request.args.get("person_id")
+    species_id = request.args.get("species_id")
+    gender_id = request.args.get("gender_id")
+    age_id = request.args.get("age_id")
+    data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
+    return render_template("specimenReports.html", specimens = data[0])
 
-    data = helper.reportsData()
+# Reports
+@app.route("/trackingReports", methods=["GET","POST"])
+def trackingReports():
+    person_id = request.args.get("person_id")
+    species_id = request.args.get("species_id")
+    gender_id = request.args.get("gender_id")
+    age_id = request.args.get("age_id")
+    data = helper.trackingReportsData(person_id,species_id,gender_id,age_id)
+    return render_template("trackingReports.html", trackings = data[0])
 
-    return render_template("reports.html", specimens = data[0])
+# Reports
+@app.route("/finalDestinationReports", methods=["GET","POST"])
+def finalDestinationReports():
+    data = helper.finalDestinationReportsData()
+    return render_template("finalDestinationReports.html", finals = data[0])
 
 
 # Add new destination, gender, age, family and species types
