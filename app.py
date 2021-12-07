@@ -171,8 +171,23 @@ def specimenReports():
     gender_id = request.args.get("gender_id")
     age_id = request.args.get("age_id")
     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
-    return render_template("specimenReports.html", specimens = data[0])
+    # if request.method == "POST":
+    #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
+    #     if request.form['action'] == 'Update':
+    #         data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
 
+    # else:
+    #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)        
+    #     return render_template("specimenReports.html", persons=data[0],species=data[1], genders=data[2], ages=data[3], specimens = data[4])
+    return render_template("specimenReports.html", 
+                persons=data[0], 
+                types = data[1],
+                species=data[2], 
+                genders=data[3], 
+                ages=data[4], 
+                destinations=data[5],
+                specimens = data[6]
+            )
 # Reports
 @app.route("/trackingReports", methods=["GET","POST"])
 def trackingReports():
