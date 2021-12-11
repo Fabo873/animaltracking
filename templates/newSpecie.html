@@ -51,6 +51,36 @@
   </div>
 </form>
 
+<div class="" style="margin: 25px;">
+  <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Elemento</th>
+          <th scope="col">Nombre comun</th>
+          <th scope="col">Nombre cientifico</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in species%}
+          <tr>
+            <th scope="row">{{i.id}}</th>
+            <td>{{i.common_name}}</td>
+            <td>{{i.scientific_name}}</td>
+            <td>{{i.animal_type.name}}</td>
+            <td><type="button" class="btn btn-danger" onclick="deleteGender('species',{{i.id}})" >Eliminar</button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+<script
+type="text/javascript"
+src="{{url_for('static', filename='/js/delete.js')}}"  
+></script>
+
 <script>
   $(document).ready(function (){
     $("#type_id").selectpicker();

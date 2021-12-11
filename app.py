@@ -5,6 +5,13 @@ from datetime import datetime
 import helper
 app = Flask(__name__)
 
+# Fechas en filtros
+# Botones de cards
+# Exportar reportes en csv
+# Validaciones de campos vacíos
+# Faltas de ortografía
+# Conteo de registros
+
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -176,7 +183,7 @@ def specimenReports():
     #     if request.form['action'] == 'Update':
     #         data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
 
-    # else:
+    # else: 
     #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)        
     #     return render_template("specimenReports.html", persons=data[0],species=data[1], genders=data[2], ages=data[3], specimens = data[4])
     return render_template("specimenReports.html", 
@@ -208,6 +215,7 @@ def finalDestinationReports():
 # Add new destination, gender, age, family and species types
 @app.route("/newDestnation", methods=["GET","POST"])
 def newDestination():
+    data = helper.newDestinationData()
     if request.method == "POST":
         if request.form["destination"]:
             pload = {"name":request.form["destination"]}
@@ -219,10 +227,11 @@ def newDestination():
             else:
                 return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
-        return render_template("newDestination.html")
+        return render_template("newDestination.html", destinations = data[0])
 
 @app.route("/newGender", methods=["GET","POST"])
 def newGender():
+    data = helper.newGenderData()
     if request.method == "POST":
         if request.form["gender"]:
             pload = {"name":request.form["gender"]}
@@ -234,10 +243,11 @@ def newGender():
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("newGender.html")
+        return render_template("newGender.html", genders = data[0])
 
 @app.route("/newAge", methods=["GET","POST"])
 def newAge():
+    data = helper.newAgeData()
     if request.method == "POST":
         if request.form["age"]:
             pload = {"name":request.form["age"]}
@@ -249,11 +259,11 @@ def newAge():
             else:
                 return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
-        return render_template("newAge.html")
+        return render_template("newAge.html", ages = data[0])
 
 @app.route("/newFamily", methods=["GET","POST"])
 def newFamily():
-
+    data = helper.newTypeData()
     if request.method == "POST":
         if request.form["family"]:
             pload = {"name":request.form["family"]}
@@ -265,11 +275,10 @@ def newFamily():
             else:
                 return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
-        return render_template("newFamily.html")
+        return render_template("newFamily.html", types=data[0])
 
 @app.route("/newSpecie", methods=["GET","POST"])
 def newSpecie():
-    
     data = helper.speciesData()
 
     if request.method == "POST":
@@ -287,7 +296,7 @@ def newSpecie():
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
     else:
-        return render_template("newSpecie.html",types = data[0])
+        return render_template("newSpecie.html",types = data[0], species = data[1])
 
 @app.route("/newNeighborhood", methods=["GET","POST"])
 def newNeighborhood():
@@ -309,9 +318,55 @@ def newNeighborhood():
     else:
         return render_template("newNeighborhood.html",
             states=data[0],
-            cities=data[1]
+            cities=data[1],
+            ns = data[2]
         )
 
+@app.route("/delete/<endPoint>/<int:id>", methods=["POST"])
+def delete(endPoint,id):
+    print(endPoint,id)
+    if request.method== "POST":
+        if endPoint == 'gender':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code == 200:
+                return render_template("index.html", message = "Genero borrado", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
+        
+        elif endPoint == 'age':
+                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+                    if r.status_code == 200:
+                        return render_template("index.html", message = "Edad borrada", category = "success")
+                    else:
+                        return render_template("index.html", message = r.json()['message'], category = "danger")
+        
+        elif endPoint == 'destination':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code == 200:
+                return render_template("index.html", message = "Destino borrado", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
+        
+        elif endPoint == 'type':
+                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+                    if r.status_code == 200:
+                        return render_template("index.html", message = "Familia borrada", category = "success")
+                    else:
+                        return render_template("index.html", message = r.json()['message'], category = "danger")
+
+        elif endPoint == 'species':
+                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+                    if r.status_code == 200:
+                        return render_template("index.html", message = "Especie borrada", category = "success")
+                    else:
+                        return render_template("index.html", message = r.json()['message'], category = "danger")
+
+        elif endPoint == 'neighborhood':
+                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+                    if r.status_code == 200:
+                        return render_template("index.html", message = "Barrio borrado", category = "success")
+                    else:
+                        return render_template("index.html", message = r.json()['message'], category = "danger")
 # main
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080, debug=True)

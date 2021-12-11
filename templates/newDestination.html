@@ -24,4 +24,31 @@
     </div>
   </div>
 </form>
+
+<div class="" style="margin: 25px;">
+  <table class="table table-success table-striped">
+      <thead>
+        <tr>
+          <th scope="col">Elemento</th>
+          <th scope="col">Lugar</th>
+          <th scope="col">Accion</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for i in destinations%}
+          <tr>
+            <th scope="row">{{i.id}}</th>
+            <td>{{i.name}}</td>
+            <td><type="button" class="btn btn-danger" onclick="deleteGender('destination',{{i.id}})" >Eliminar</button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+  </table>
+</div>
+
+<script
+type="text/javascript"
+src="{{url_for('static', filename='/js/delete.js')}}"  
+></script>
+
 {% endblock %}

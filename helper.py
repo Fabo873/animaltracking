@@ -88,6 +88,11 @@ def speciesData():
   types = resp.json()['data']
   data.append(types)
 
+  url_species = 'http://127.0.0.1:5000/species'
+  resp = requests.get(url=url_species)
+  species = resp.json()['data']
+  data.append(species)
+
   return data
 
 def neighborhoodData():
@@ -103,6 +108,11 @@ def neighborhoodData():
   cities = resp.json()['data']
   data.append(cities)
 
+  url_neig = 'http://127.0.0.1:5000/neighborhood'
+  resp = requests.get(url=url_neig)
+  neig = resp.json()['data']
+  data.append(neig)
+  
   return data
 
 def specimenReportsData(person_id:int = None, species_id:int  = None, gender_id:int = None, age_id:int = None):
@@ -186,5 +196,47 @@ def finalDestinationReportsData():
   resp = requests.get(url=url_specimen)
   specimens = resp.json()['data']
   data.append(specimens)
+
+  return data
+
+def newGenderData():
+  
+  data = []
+  
+  url_gender = 'http://127.0.0.1:5000/gender'
+  resp = requests.get(url=url_gender)
+  genders = resp.json()['data']
+  data.append(genders)
+
+  return data
+
+def newAgeData():
+  
+  data = []
+  
+  url_age = 'http://127.0.0.1:5000/age'
+  resp = requests.get(url=url_age)
+  ages = resp.json()['data']
+  data.append(ages)
+
+  return data
+
+def newDestinationData():
+  data = []
+  
+  url_destination = 'http://127.0.0.1:5000/destination'
+  resp = requests.get(url=url_destination)
+  destinations = resp.json()['data']
+  data.append(destinations)
+
+  return data
+
+def newTypeData():
+  data = []
+  
+  url_type = 'http://127.0.0.1:5000/type'
+  resp = requests.get(url=url_type)
+  types = resp.json()['data']
+  data.append(types)
 
   return data
