@@ -240,3 +240,13 @@ def newTypeData():
   data.append(types)
 
   return data
+
+def newPersonData():
+  data = []
+  
+  url_type = 'http://127.0.0.1:5000/person'
+  resp = requests.get(url=url_type)
+  persons = resp.json()['data']
+  data.append(persons)
+
+  return data

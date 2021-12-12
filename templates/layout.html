@@ -41,16 +41,16 @@
             <a class="nav-link dropdown-toggle nav-item-link" href="#" role="button"
               data-bs-toggle="dropdown">Seguimientos </a>
             <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="{{url_for('tracking')}}">Dar seguimiento</a></li>
-              <li><a class="dropdown-item" href="{{url_for('destination')}}">Destino Final</a></li>
+              <li><a class="dropdown-item" href="{{url_for('tracking', folio=0)}}">Dar seguimiento</a></li>
+              <li><a class="dropdown-item" href="{{url_for('destination', folio=0)}}">Destino Final</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown nav-item-style" style="margin-right: 50px;">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Reportes </a>
             <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{url_for('specimenReports')}}">Reportes de especimens</a></li>
               <li><a class="dropdown-item" href="{{url_for('trackingReports')}}">Reportes de seguimientos</a></li>
               <li><a class="dropdown-item" href="{{url_for('finalDestinationReports')}}">Reportes de destinos finales</a></li>
-              <li><a class="dropdown-item" href="{{url_for('specimenReports')}}">Reportes de especimens</a></li>
             </ul>
           </li>
           <li class="nav-item dropdown nav-item-style" style="margin-right: 50px;">
@@ -62,7 +62,8 @@
               <li><a class="dropdown-item" href="{{url_for('newAge')}}">Nueva edad</a></li>
               <li><a class="dropdown-item" href="{{url_for('newFamily')}}">Nueva familia animal</a></li>
               <li><a class="dropdown-item" href="{{url_for('newSpecie')}}">Nueva especie</a></li>
-              <li><a class="dropdown-item" href="{{url_for('newNeighborhood')}}">Nuevo barrio</a></li>
+              <li><a class="dropdown-item" href="{{url_for('newNeighborhood')}}">Nueva colonia</a></li>
+              <li><a class="dropdown-item" href="{{url_for('newPerson')}}">Nueva Persona</a></li>
             </ul>
           </li>
           <li class="nav-item nav-item-style" style="margin-right: 30px;">

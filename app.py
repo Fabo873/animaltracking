@@ -6,7 +6,6 @@ import helper
 app = Flask(__name__)
 
 # Fechas en filtros
-# Botones de cards
 # Exportar reportes en csv
 # Validaciones de campos vacíos
 # Faltas de ortografía
@@ -72,9 +71,8 @@ def register():
         )
 
 # Tracking and final destination
-@app.route("/tracking", methods=["GET","POST"])
-def tracking():
-
+@app.route("/tracking/<folio>", methods=["GET","POST"])
+def tracking(folio):
     data = helper.trackingData()
 
     if data[1]:
@@ -120,11 +118,12 @@ def tracking():
     else:
         return render_template("tracking.html", 
             destinations=data[0], 
-            specimens=data[1]
+            specimens=data[1],
+            folio=folio
         )
         
-@app.route("/destination", methods=["GET","POST"])
-def destination():
+@app.route("/destination/<folio>", methods=["GET","POST"])
+def destination(folio):
 
     data = helper.destinationData()
 
@@ -157,7 +156,7 @@ def destination():
                 "size":size,
                 "notes":request.form["notes"]
             }
-
+            # print(pload)
             r = requests.post('http://127.0.0.1:5000/final', json = pload)
             print(r.status_code)
             if r.status_code < 399:
@@ -167,7 +166,8 @@ def destination():
     else:
         return render_template("destination.html", 
             destinations=data[0], 
-            specimens=data[1]
+            specimens=data[1],
+            folio= folio
         )
 
 # Reports
@@ -322,9 +322,30 @@ def newNeighborhood():
             ns = data[2]
         )
 
+
+@app.route("/newPerson", methods=["GET","POST"])
+def newPerson():
+    data = helper.newPersonData()
+    if request.method == "POST":
+        if request.form["name"]:
+            pload = {
+                "name":request.form["name"],
+                "first_lastname": request.form["first_lastname"],
+                "second_lastname": request.form["second_lastname"]
+            }
+
+            r = requests.post('http://127.0.0.1:5000/person', json = pload)
+
+            if r.status_code < 399:
+                return render_template("index.html", message = "Nueva persona",category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'],category = "danger")
+    else:
+        return render_template("newPerson.html", persons=data[0])
+
 @app.route("/delete/<endPoint>/<int:id>", methods=["POST"])
 def delete(endPoint,id):
-    print(endPoint,id)
+    # print(endPoint,id)
     if request.method== "POST":
         if endPoint == 'gender':
             r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
@@ -367,6 +388,13 @@ def delete(endPoint,id):
                         return render_template("index.html", message = "Barrio borrado", category = "success")
                     else:
                         return render_template("index.html", message = r.json()['message'], category = "danger")
+        
+        elif endPoint == 'person':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code == 200:
+                return render_template("index.html", message = "Persona borrada", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
 # main
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080, debug=True)

@@ -1,7 +1,6 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1>{{message}}</h1>
 <div style="margin-bottom: 100px;">
   <form action="#" method="post">
     <div class="row">
@@ -93,6 +92,7 @@
             <h5 class="card-title">Folio - {{i.folio}} </h5>
           </div>
           <ul class="list-group list-group-flush">
+            <li class="list-group-item">{{i.date}}</li>
             <li class="list-group-item">{{i.person.name}} {{i.person.first_lastname}}</li>
             <li class="list-group-item">Tipo : {{i.animalType.name}}</li>
             <li class="list-group-item">Especie : {{i.species.common_name}} </li>
@@ -103,8 +103,8 @@
           </ul>
           <div class="card-body">
             <p class="card-text">{{i.condition}}</p>
-            <a href="#" class="btn btn-primary">Seguimiento</a>
-            <a href="#" class="btn btn-primary" style="margin-left: 50px">Destino</a>
+            <a href="{{url_for('tracking', folio=i.folio)}}" class="btn btn-primary" >Seguimiento</a>
+            <a href="{{url_for('destination', folio=i.folio)}}" class="btn btn-primary" style="margin-left: 50px">Destino</a>
           </div>
       </div>
     </div>

@@ -4,17 +4,30 @@
 </div>
 
 <form style="margin: 25px" action="#" method="post">
-  <div class="form-group row" style="margin: 20px">
-    <label for="folio_id" class="col-sm-2 col-form-label">Folio</label>
-    <div class="col-sm-10">
-      <select class="form-control" id="folio_id" name="folio" data-live-search="true">
-        <option value="" selected disabled hidden>Nada seleccionado</option>
-        {% for i in specimens%}
-        <option value="{{i.folio}}">{{i.folio}}</option>
-        {% endfor %}
-      </select>
+  
+  {% if folio == '0' %}
+    <div class="form-group row" style="margin: 20px">
+      <label for="folio_id" class="col-sm-2 col-form-label">Folio</label>
+      <div class="col-sm-10">
+        <select class="form-control" id="folio_id" name="folio" data-live-search="true">
+          <option value="" selected disabled hidden>Nada seleccionado</option>
+          {% for i in specimens%}
+          <option value="{{i.folio}}">{{i.folio}}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
-  </div>
+  {% else %}
+    <div class="form-group row" style="margin: 20px">
+      <label for="folio_id" class="col-sm-2 col-form-label">Folio</label>
+      <div class="col-sm-10">
+        <select class="form-control" id="folio_id" name="folio" data-live-search="true">
+          <option value="{{folio}}">{{folio}}</option>
+        </select>
+      </div>
+    </div>
+  {% endif %}
+
   <div class="form-group row" style="margin: 20px">
     <label for="date_id" class="col-sm-2 col-form-label">Fecha</label>
     <div class="col-sm-10">
@@ -72,6 +85,7 @@
         name="destination"
         data-live-search="true"
       >
+        <option value="" selected disabled hidden>Nada seleccionado</option>
         {% for i in destinations%}
         <option value="{{i.id}}">{{i.name}}</option>
         {% endfor %}
