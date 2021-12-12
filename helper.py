@@ -1,3 +1,4 @@
+from datetime import date
 import requests
 
 def registerData():
@@ -166,25 +167,73 @@ def specimenReportsData(person_id:int = None, species_id:int  = None, gender_id:
 
   return data
 
-def trackingReportsData(person_id:int = None, species_id:int  = None, gender_id:int = None, age_id:int = None):
+def trackingReportsData(
+    date:date = None,
+    person_id:int = None, 
+    type_id:int = None, 
+    species_id:int = None, 
+    gender_id:int = None, 
+    age_id:int = None,
+    destination_id:int = None
+  ):
   
   data = []
   parameters = {}
   
-  url_specimen = 'http://127.0.0.1:5000/tracking'
+  url_person = 'http://127.0.0.1:5000/person'
+  resp = requests.get(url=url_person)
+  persons = resp.json()['data']
+  data.append(persons)
 
+  url_type = 'http://127.0.0.1:5000/type'
+  resp = requests.get(url=url_type)
+  types = resp.json()['data']
+  data.append(types)
+
+  url_species = 'http://127.0.0.1:5000/species'
+  resp = requests.get(url=url_species)
+  species = resp.json()['data']
+  data.append(species)
+
+  url_gender = 'http://127.0.0.1:5000/gender'
+  resp = requests.get(url=url_gender)
+  genders = resp.json()['data']
+  data.append(genders)
+
+  url_age = 'http://127.0.0.1:5000/age'
+  resp = requests.get(url=url_age)
+  ages = resp.json()['data']
+  data.append(ages)
+
+  url_destination = 'http://127.0.0.1:5000/destination'
+  resp = requests.get(url=url_destination)
+  destinations = resp.json()['data']
+  data.append(destinations)
+
+  url_specimen = 'http://127.0.0.1:5000/specimen'
+  resp = requests.get(url=url_specimen, params=parameters)
+  specimens = resp.json()['data']
+  data.append(specimens)
+  
+  if date:
+    parameters["date"]=date
   if person_id:
     parameters["person"]=person_id
+  if type_id:
+    parameters["type_id"]= type_id
   if species_id:
     parameters["species"]=species_id
   if gender_id:
     parameters["gender"]=gender_id
   if age_id:
     parameters["age"]=age_id
+  if destination_id:
+    parameters["destination"]=destination_id
 
-  resp = requests.get(url=url_specimen, params=parameters)
-  specimens = resp.json()['data']
-  data.append(specimens)
+  url_tracking = 'http://127.0.0.1:5000/tracking'
+  resp = requests.get(url=url_tracking, params=parameters)
+  trackings = resp.json()['data']
+  data.append(trackings)
 
   return data
 

@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<!-- Filters -->
 <div style="margin-bottom: 100px;">
   <form action="#" method="post">
     <div class="row">
@@ -81,6 +82,8 @@
     </div>
   </form>
 </div>
+<!-- Filters -->
+
 
 <div class="row row-cols-1 row-cols-md-4 g-4">
   {% for i in specimens%}
@@ -109,9 +112,8 @@
       </div>
     </div>
   {% endfor %}
-
-
 </div>
+
 <script>
   function update_family(value ) {
     console.log("Updating animal families")

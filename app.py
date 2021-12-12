@@ -187,23 +187,53 @@ def specimenReports():
     #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)        
     #     return render_template("specimenReports.html", persons=data[0],species=data[1], genders=data[2], ages=data[3], specimens = data[4])
     return render_template("specimenReports.html", 
-                persons=data[0], 
-                types = data[1],
-                species=data[2], 
-                genders=data[3], 
-                ages=data[4], 
-                destinations=data[5],
-                specimens = data[6]
-            )
+        persons=data[0], 
+        types = data[1],
+        species=data[2], 
+        genders=data[3], 
+        ages=data[4], 
+        destinations=data[5],
+        specimens = data[6]
+    )
 # Reports
 @app.route("/trackingReports", methods=["GET","POST"])
 def trackingReports():
+    date = request.args.get("date_id")
     person_id = request.args.get("person_id")
+    type_id = request.args.get("type_id")
     species_id = request.args.get("species_id")
     gender_id = request.args.get("gender_id")
     age_id = request.args.get("age_id")
-    data = helper.trackingReportsData(person_id,species_id,gender_id,age_id)
-    return render_template("trackingReports.html", trackings = data[0])
+    destination_id = request.args.get("destination_id")
+
+    data = helper.trackingReportsData(date,person_id, type_id, species_id, gender_id, age_id,destination_id)
+
+    if request.method == "POST":
+        data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
+        if request.form['action'] == 'Filter':
+            data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
+        return render_template("trackingReports.html",
+            persons=data[0], 
+            types = data[1],
+            species=data[2], 
+            genders=data[3], 
+            ages=data[4], 
+            destinations=data[5],
+            specimens = data[6],
+            trackings = data[7]
+        )
+    
+    else:
+        return render_template("trackingReports.html",
+            persons=data[0], 
+            types = data[1],
+            species=data[2], 
+            genders=data[3], 
+            ages=data[4], 
+            destinations=data[5],
+            specimens = data[6],
+            trackings = data[7]
+        )
 
 # Reports
 @app.route("/finalDestinationReports", methods=["GET","POST"])
