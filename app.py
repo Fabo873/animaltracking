@@ -98,6 +98,7 @@ def tracking(folio):
 
             if not specimens:
                 return render_template("index.html", message = "Specimen no encontrado!", category = "danger")
+            print(request.form["date"])
             date = datetime.strptime(request.form["date"], '%Y-%m-%d')
             pload = {
                 "specimen_id":specimens[0]["id"],
@@ -108,9 +109,9 @@ def tracking(folio):
                 "condition":request.form["condition"],
                 "destination_id":request.form["destination"]
             }
-            print(pload)
+
             r = requests.post('http://127.0.0.1:5000/tracking', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
                 return render_template("index.html", message = "Seguimiento creado satisfactoriamente", category = "success")
             else:
@@ -158,7 +159,7 @@ def destination(folio):
             }
             # print(pload)
             r = requests.post('http://127.0.0.1:5000/final', json = pload)
-            print(r.status_code)
+
             if r.status_code < 399:
                 return render_template("index.html", message = "Destino final creado!", category = "success")
             else:
@@ -187,40 +188,39 @@ def specimenReports():
     #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)        
     #     return render_template("specimenReports.html", persons=data[0],species=data[1], genders=data[2], ages=data[3], specimens = data[4])
     return render_template("specimenReports.html", 
-        persons=data[0], 
+        persons = data[0], 
         types = data[1],
-        species=data[2], 
-        genders=data[3], 
-        ages=data[4], 
-        destinations=data[5],
+        species = data[2], 
+        genders = data[3], 
+        ages = data[4], 
+        destinations = data[5],
         specimens = data[6]
     )
 # Reports
 @app.route("/trackingReports", methods=["GET","POST"])
 def trackingReports():
-    date = request.args.get("date_id")
-    person_id = request.args.get("person_id")
-    type_id = request.args.get("type_id")
-    species_id = request.args.get("species_id")
-    gender_id = request.args.get("gender_id")
-    age_id = request.args.get("age_id")
-    destination_id = request.args.get("destination_id")
 
-    data = helper.trackingReportsData(date,person_id, type_id, species_id, gender_id, age_id,destination_id)
-
+    data = helper.trackingReportsData()
     if request.method == "POST":
-        data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
-        if request.form['action'] == 'Filter':
-            data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
+        
+        date = request.form["date"]
+        person_id = request.form["person"]
+        type_id = request.form["type"]
+        species_id = request.form["specie"]
+        gender_id = request.form["gender"]
+        age_id = request.form["age"]
+        destination_id = request.form["destination"]
+
+        filteredData = helper.trackingReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
         return render_template("trackingReports.html",
-            persons=data[0], 
-            types = data[1],
-            species=data[2], 
-            genders=data[3], 
-            ages=data[4], 
-            destinations=data[5],
-            specimens = data[6],
-            trackings = data[7]
+        persons = filteredData[0], 
+        types = filteredData[1],
+        species = filteredData[2], 
+        genders = filteredData[3], 
+        ages = filteredData[4], 
+        destinations = filteredData[5],
+        specimens = filteredData[6],
+        trackings = filteredData[7]
         )
     
     else:
@@ -342,7 +342,7 @@ def newNeighborhood():
             r = requests.post('http://127.0.0.1:5000/neighborhood', json = pload)
 
             if r.status_code < 399:
-                return render_template("index.html", message = "Nuevo barrio agregado", category = "success")
+                return render_template("index.html", message = "Nueva colonia agregada", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
     else:

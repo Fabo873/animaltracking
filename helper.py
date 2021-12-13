@@ -218,20 +218,21 @@ def trackingReportsData(
   if date:
     parameters["date"]=date
   if person_id:
-    parameters["person"]=person_id
+    parameters["person_id"]=person_id
   if type_id:
-    parameters["type_id"]= type_id
+    parameters["animalType_id"]= type_id
   if species_id:
-    parameters["species"]=species_id
+    parameters["species_id"]=species_id
   if gender_id:
-    parameters["gender"]=gender_id
+    parameters["gender_id"]=gender_id
   if age_id:
-    parameters["age"]=age_id
+    parameters["age_id"]=age_id
   if destination_id:
-    parameters["destination"]=destination_id
+    parameters["destination_id"]=destination_id
 
   url_tracking = 'http://127.0.0.1:5000/tracking'
   resp = requests.get(url=url_tracking, params=parameters)
+  print(parameters)
   trackings = resp.json()['data']
   data.append(trackings)
 

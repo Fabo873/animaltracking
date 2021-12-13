@@ -10,7 +10,7 @@
     <label for="type_id" class="col-sm-2 col-form-label">Familia animal</label>
     <div class="col-sm-10">
       <select class="form-control" id="type_id" name="type" data-live-search="true">
-        <option value=""></option>
+        <option value="" selected disabled hidden>Nada seleccionado</option>
         {% for i in types%}
         <option value="{{i.id}}">{{i.name}}</option>
         {% endfor %}
@@ -81,9 +81,4 @@ type="text/javascript"
 src="{{url_for('static', filename='/js/delete.js')}}"  
 ></script>
 
-<script>
-  $(document).ready(function (){
-    $("#type_id").selectpicker();
-  });
-</script>
 {% endblock %}

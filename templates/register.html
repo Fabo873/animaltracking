@@ -8,7 +8,7 @@
   <div><h3>Especimen</h3></div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="person_id" class="col-sm-2 col-form-label ">Persona que recive el ejemplar</label>
+    <label for="person_id" class="col-sm-2 col-form-label ">Persona que recibe el ejemplar</label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="person_id" 
@@ -167,7 +167,6 @@
         data-live-search="true" 
         onchange="update_state(this.value)" 
       >
-        <option value="" selected disabled hidden>Nada seleccionado</option>
         {% for i in states%}
         <option value="{{i.id}}">{{i.name}}</option>
         {% endfor %}
@@ -184,7 +183,9 @@
         data-live-search="true" 
         onchange="update_neighborhood(this.value)"
       >
-      <option value="" selected disabled hidden>Nada seleccionado</option>
+      {% for i in cities%}
+      <option value="{{i.id}}">{{i.name}}</option>
+      {% endfor %}
       </select>
     </div>
   </div>
@@ -193,7 +194,9 @@
     <label for="neighborhood_id" class="col-sm-2 col-form-label">Colonia</label>
     <div class="col-sm-10">
       <select class="form-control" id="neighborhood_id" name="neighborhood" data-live-search="true" >
-        <option value="" selected disabled hidden>Nada seleccionado</option>
+        {% for i in neig%}
+        <option value="{{i.id}}">{{i.name}}</option>
+        {% endfor %}
       </select>
     </div>
   </div>
@@ -208,10 +211,9 @@
 
 <script language="javascript" type="text/javascript">
   function set_scientific_name(value ) {
-    console.log("Updating animal sname")
+    // console.log("Updating animal sname")
     const species = JSON.parse('{{species|tojson}}');
     $("#sname_id").empty();
-    // console.log(species[value].scientific_name)
     $("#sname_id").append("<option value=''>"+species[value].scientific_name+"</option>");
 
   }
@@ -220,6 +222,7 @@
     console.log("Updating animal families")
     const species = JSON.parse('{{species|tojson}}');
     $("#species_id").empty();
+    $("#species_id").append("<option value='' selected disabled hidden>Seleccione de las familias filtradas</option>");
     for (let i= 0; i< species.length; i++) {
       if ( species[i].animal_type.id == value){
         $("#species_id").append("<option value=\""+species[i].id+"\">"+species[i].common_name+"</option>");
@@ -240,10 +243,9 @@
   }
 
   function update_neighborhood(value) {
-    console.log("Updating city's neighborhoods");
+    // console.log("Updating city's neighborhoods");
     const neighborhood = JSON.parse('{{neig|tojson}}');
     $("#neighborhood_id").empty();
-    console.log(neighborhood);
     for (let i= 0; i< neighborhood.length; i++) {
       if ( neighborhood[i].municipality.id == value){
         $("#neighborhood_id").append("<option value=\""+neighborhood[i].id+"\">"+neighborhood[i].name+"</option>");
@@ -253,16 +255,25 @@
 
 </script>
 <script>
-  $(document).ready(function (){
-    $("#person_id").selectpicker();
-    $("#type_id").selectpicker();
-    $("#species_id").selectpicker();
-    $("#gender_id").selectpicker();
-    $("#age_id").selectpicker();
-    $("#destination_id").selectpicker();
-    $("#state_id").selectpicker();
-    $("#city_id").selectpicker();
-    $("#neighborhood_id").selectpicker();
+$(document).ready(function (){
+    let yucatan = 31;
+    let merida = 31050;
+
+    let stateId = document.getElementById('state_id');
+    let cityId = document.getElementById('city_id');
+
+    for (var i,j = 0; i=stateId.options[j]; j++){
+      if(i.value == yucatan){
+        stateId.selectedIndex = j;
+        break;
+      }
+    }
+    for (var i,j = 0; i=cityId.options[j]; j++){
+      if(i.value == merida){
+        cityId.selectedIndex = j;
+        break;
+      }
+    }
   });
 </script>
 {% endblock %}
