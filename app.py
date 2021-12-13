@@ -174,19 +174,25 @@ def destination(folio):
 # Reports
 @app.route("/specimenReports", methods=["GET","POST"])
 def specimenReports():
-    person_id = request.args.get("person_id")
-    species_id = request.args.get("species_id")
-    gender_id = request.args.get("gender_id")
-    age_id = request.args.get("age_id")
-    data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
-    # if request.method == "POST":
-    #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
-    #     if request.form['action'] == 'Update':
-    #         data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)
-
-    # else: 
-    #     data = helper.specimenReportsData(person_id,species_id,gender_id,age_id)        
-    #     return render_template("specimenReports.html", persons=data[0],species=data[1], genders=data[2], ages=data[3], specimens = data[4])
+    data = helper.specimenReportsData()
+    if request.method == "POST":
+        date = request.form["date"]
+        person_id = request.form["person"]
+        type_id = request.form["type"]
+        species_id = request.form["specie"]
+        gender_id = request.form["gender"]
+        age_id = request.form["age"]
+        destination_id = request.form["destination"]
+        filteredData = helper.specimenReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
+        return render_template("specimenReports.html", 
+            persons = filteredData[0], 
+            types = filteredData[1],
+            species = filteredData[2], 
+            genders = filteredData[3], 
+            ages = filteredData[4], 
+            destinations = filteredData[5],
+            specimens = filteredData[6],
+        )
     return render_template("specimenReports.html", 
         persons = data[0], 
         types = data[1],
@@ -239,7 +245,33 @@ def trackingReports():
 @app.route("/finalDestinationReports", methods=["GET","POST"])
 def finalDestinationReports():
     data = helper.finalDestinationReportsData()
-    return render_template("finalDestinationReports.html", finals = data[0])
+    if request.method == "POST":
+        date = request.form["date"]
+        person_id = request.form["person"]
+        type_id = request.form["type"]
+        species_id = request.form["specie"]
+        gender_id = request.form["gender"]
+        age_id = request.form["age"]
+        destination_id = request.form["destination"]
+        filteredData = helper.finalDestinationReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
+        return render_template("finalDestinationReports.html", 
+            persons = filteredData[0], 
+            types = filteredData[1],
+            species = filteredData[2], 
+            genders = filteredData[3], 
+            ages = filteredData[4], 
+            destinations = filteredData[5],
+            finals = filteredData[6],
+        )
+    return render_template("finalDestinationReports.html", 
+        persons = data[0], 
+        types = data[1],
+        species = data[2], 
+        genders = data[3], 
+        ages = data[4], 
+        destinations = data[5],
+        finals = data[6]
+    )
 
 
 # Add new destination, gender, age, family and species types

@@ -1,14 +1,104 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<h1>{{message}}</h1>
+<!-- Filters -->
+<div style="margin-bottom: 100px;">
+  <form action="#" method="post">
+    <div class="row">
+      <div class="col">
+        <label for="date_id" class="">Fecha</label>
+        <select 
+          class="form-select" 
+          id="date_id"
+          name="date"  
+          >
+          <option value="0" selected>Sin filtro</option>
+          {% for i in trackings%}
+            <option value="{{i.date}}">{{i.date}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label for="person_id" class="">Persona</label>
+        <select 
+          class="form-select" 
+          id="person_id"
+          name="person"  
+          >
+          <option value="0" selected>Sin filtro</option>
+          {% for i in persons%}
+            <option value="{{i.id}}">{{i.name}} {{i.first_lastname}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label for="type_id" class="">Tipo</label>
+        <select class="form-select"
+          id="type_id" 
+          name="type"
+          onchange="update_family(this.value)" 
+        >
+          <option value="0" selected>Sin filtro</option>
+          {% for i in types%}
+          <option value="{{i.id}}">{{i.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label for="species_id" class="">Especie</label>
+        <select class="form-select" 
+          id="species_id" 
+          name="specie"
+        >
+          <option value="0" selected>Sin filtro</option>
+        </select>
+      </div>
+      <div class="col">
+        <label for="gender_id" class="">Genero</label>
+        <select class="form-select" id="gender_id" name="gender" aria-label="Default select example">
+          <option value="0" selected>Sin filtro</option>
+          {% for i in genders%}
+          <option value="{{i.id}}">{{i.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col">
+        <label for="age_id" class="">Edad</label>
+        <select class="form-select" id="age_id" name="age" aria-label="Default select example">
+          <option value="0" selected>Sin filtro</option>
+          {% for i in ages%}
+          <option value="{{i.id}}">{{i.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+
+      <div class="col">
+        <label for="destination_id" class="">Destino</label>
+        <select class="form-select" id="destination_id" name="destination" aria-label="Default select example">
+          <option value="0" selected>Sin filtro</option>
+          {% for i in destinations%}
+          <option value="{{i.id}}">{{i.name}}</option>
+          {% endfor %}
+        </select>
+      </div>
+  
+      <!-- Filter buttons -->
+      <div class="col-auto">
+        <button type="submit" name="action" value="Filter" class="btn btn-success mb-3">Filtrar</button>
+      </div>
+      
+    </div>
+  </form>
+</div>
+<!-- Filters -->
+
 <div class="row row-cols-1 row-cols-md-4 g-4">
   {% for i in finals%}
     <div class="col">
       <div class="card" style="width: 18rem;">
         <!-- <img src="..." class="card-img-top" alt="..."> -->
           <div class="card-body">
-            <!-- <option value="{{i.folio}}">{{i.folio}}</option> -->
             <h5 class="card-title">Folio - {{i.specimen.folio}} </h5>
           </div>
           <ul class="list-group list-group-flush">
@@ -29,4 +119,19 @@
   {% endfor %}
 
 </div>
+
+<script>
+  function update_family(value ) {
+    console.log("Updating animal families")
+    const species = JSON.parse('{{species|tojson}}');
+    $("#species_id").empty();
+    $("#species_id").append("<option value='0' selected>Sin filtro</option>");
+    for (let i= 0; i< species.length; i++) {
+      if ( species[i].animal_type.id == value){
+        $("#species_id").append("<option value=\""+species[i].id+"\">"+species[i].common_name+"</option>");
+
+      }
+    }
+  }
+</script>
 {% endblock %}

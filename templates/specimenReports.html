@@ -5,7 +5,19 @@
 <div style="margin-bottom: 100px;">
   <form action="#" method="post">
     <div class="row">
-      
+      <div class="col">
+        <label for="date_id" class="">Fecha</label>
+        <select 
+          class="form-select" 
+          id="date_id"
+          name="date"  
+          >
+          <option value="0" selected>Sin filtro</option>
+          {% for i in trackings%}
+            <option value="{{i.date}}">{{i.date}}</option>
+          {% endfor %}
+        </select>
+      </div>
       <div class="col">
         <label for="person_id" class="">Persona</label>
         <select 
@@ -73,10 +85,7 @@
   
       <!-- Filter buttons -->
       <div class="col-auto">
-        <button type="submit" name="action" value="Update" class="btn btn-success mb-3">Filtrar</button>
-      </div>
-      <div class="col-auto">
-        <button type="submit" name="action" value="Delete" class="btn btn-warning mb-3">Remover filtros</button>
+        <button type="submit" name="action" value="Filter" class="btn btn-success mb-3">Filtrar</button>
       </div>
       
     </div>
@@ -119,6 +128,7 @@
     console.log("Updating animal families")
     const species = JSON.parse('{{species|tojson}}');
     $("#species_id").empty();
+    $("#species_id").append("<option value='0' selected>Sin filtro</option>");
     for (let i= 0; i< species.length; i++) {
       if ( species[i].animal_type.id == value){
         $("#species_id").append("<option value=\""+species[i].id+"\">"+species[i].common_name+"</option>");

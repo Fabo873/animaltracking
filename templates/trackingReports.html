@@ -126,7 +126,7 @@
     console.log("Updating animal families")
     const species = JSON.parse('{{species|tojson}}');
     $("#species_id").empty();
-    $("#species_id").append("<option value='0' selected hidden>Sin filtro</option>");
+    $("#species_id").append("<option value='0' selected>Sin filtro</option>");
     for (let i= 0; i< species.length; i++) {
       if ( species[i].animal_type.id == value){
         $("#species_id").append("<option value=\""+species[i].id+"\">"+species[i].common_name+"</option>");
