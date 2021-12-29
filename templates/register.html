@@ -17,7 +17,7 @@
       >
         <option value="" selected disabled hidden>Nada seleccionado</option>
         {% for i in persons%}
-        <option value="{{i.id}}">{{i.name}}</option>
+        <option value="{{i.id}}">{{i.name}} {{i.first_lastname}}</option>
         {% endfor %}
       </select>
     </div>

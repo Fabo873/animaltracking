@@ -366,4 +366,9 @@ def newPersonData():
   persons = resp.json()['data']
   data.append(persons)
 
+  url_type = 'http://127.0.0.1:5000/user'
+  resp = requests.get(url=url_type)
+  users = resp.json()['data']
+  data.append(users)
+
   return data

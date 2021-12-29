@@ -43,7 +43,7 @@ def register():
             }
 
             r = requests.post('http://127.0.0.1:5000/specimen', json = pload_specimen)
-            print(r.status_code)
+            # print(r.status_code)
             if r.status_code < 399:
                 pload_reception = {
                     "specimen_id":r.json()['data']['id'],
@@ -102,7 +102,7 @@ def tracking(folio):
             date = datetime.strptime(request.form["date"], '%Y-%m-%d')
             pload = {
                 "specimen_id":specimens[0]["id"],
-                "date":date.strftime("%y-%m-%d"),
+                "date":date.strftime("%d-%m-%y"),
                 "reviewed":"false",
                 "weight": weigth,
                 "size" : size,
@@ -389,21 +389,37 @@ def newNeighborhood():
 def newPerson():
     data = helper.newPersonData()
     if request.method == "POST":
-        if request.form["name"]:
+        if request.form["username"] and request.form["password"]:
+
             pload = {
+                "username":request.form["username"],
+                "password": request.form["password"],
+            }
+
+            r = requests.post('http://127.0.0.1:5000/user', json = pload)
+            url_users = 'http://127.0.0.1:5000/user'
+            resp = requests.get(url=url_users)
+            users = resp.json()['data']
+            user_id = 0
+            for user in users:
+                if user["username"] == request.form["username"]:
+                    user_id = user["id"]
+            if r.status_code < 399:
+                pload = {
+                "user_id":user_id,
                 "name":request.form["name"],
                 "first_lastname": request.form["first_lastname"],
                 "second_lastname": request.form["second_lastname"]
-            }
-
-            r = requests.post('http://127.0.0.1:5000/person', json = pload)
-
-            if r.status_code < 399:
-                return render_template("index.html", message = "Nueva persona",category = "success")
+                }
+                r = requests.post('http://127.0.0.1:5000/person', json = pload)
+                if r.status_code < 399:
+                    return render_template("index.html", message = "Nueva persona creada",category = "success")
+                else:
+                    return render_template("index.html", message = r.json()['message'],category = "danger")  
             else:
                 return render_template("index.html", message = r.json()['message'],category = "danger")
     else:
-        return render_template("newPerson.html", persons=data[0])
+        return render_template("newPerson.html", persons=data[0],users=data[0])
 
 @app.route("/delete/<endPoint>/<int:id>", methods=["POST"])
 def delete(endPoint,id):
