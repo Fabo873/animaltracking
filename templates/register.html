@@ -8,14 +8,14 @@
   <div><h3>Especimen</h3></div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="person_id" class="col-sm-2 col-form-label ">Persona que recibe el ejemplar</label>
+    <label for="person_id" class="col-sm-2 col-form-label ">Persona que recibe el ejemplar <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="person_id" 
         name="person" 
         data-live-search="true"
       >
-        <option value="" selected disabled hidden>Nada seleccionado</option>
+        <option value="0" selected disabled hidden>Nada seleccionado</option>
         {% for i in persons%}
         <option value="{{i.id}}">{{i.name}} {{i.first_lastname}}</option>
         {% endfor %}
@@ -25,7 +25,7 @@
 
 <!-- Family and specie -->
   <div class="form-group row" style="margin: 20px">
-    <label for="type_id" class="col-sm-2 col-form-label">Familia animal</label>
+    <label for="type_id" class="col-sm-2 col-form-label">Familia animal <em style='color:red;'>(*)</em> </label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="type_id" 
@@ -42,7 +42,7 @@
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="species_id" class="col-sm-2 col-form-label">Especie</label>
+    <label for="species_id" class="col-sm-2 col-form-label">Especie <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="species_id" 
@@ -66,7 +66,7 @@
 
 
   <div class="form-group row" style="margin: 20px">
-    <label for="gender_id" class="col-sm-2 col-form-label">Genero del animal</label>
+    <label for="gender_id" class="col-sm-2 col-form-label">Genero del animal <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" id="gender_id" name="gender" data-live-search="true">
         <option value="" selected disabled hidden>Nada seleccionado</option>
@@ -78,7 +78,7 @@
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="age_id" class="col-sm-2 col-form-label">Edad del animal</label>
+    <label for="age_id" class="col-sm-2 col-form-label">Edad del animal <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" id="age_id" name="age" data-live-search="true">
         <option value="" selected disabled hidden>Nada seleccionado</option>
@@ -90,7 +90,7 @@
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="destination_id" class="col-sm-2 col-form-label">Destino</label>
+    <label for="destination_id" class="col-sm-2 col-form-label">Destino <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" id="destination_id" name="destination" data-live-search="true">
         <option value="" selected disabled hidden>Nada seleccionado</option>
@@ -144,7 +144,7 @@
 
   <div class="form-group row" style="margin: 20px">
     <label for="deliver_person" class="col-sm-2 col-form-label"
-      >Quien entrego el animal</label
+      >¿Quién entrego el animal? <em style='color:red;'>(*)</em></label
     >
     <div class="col-sm-10">
       <input
@@ -159,7 +159,7 @@
 
   <!-- Location -->
   <div class="form-group row" style="margin: 20px">
-    <label for="state_id" class="col-sm-2 col-form-label">Estado</label>
+    <label for="state_id" class="col-sm-2 col-form-label">Estado <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="state_id" 
@@ -175,7 +175,7 @@
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="city_id" class="col-sm-2 col-form-label">Ciudad</label>
+    <label for="city_id" class="col-sm-2 col-form-label">Ciudad <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" 
         id="city_id" 
@@ -191,7 +191,7 @@
   </div>
 
   <div class="form-group row" style="margin: 20px">
-    <label for="neighborhood_id" class="col-sm-2 col-form-label">Colonia</label>
+    <label for="neighborhood_id" class="col-sm-2 col-form-label">Colonia <em style='color:red;'>(*)</em></label>
     <div class="col-sm-10">
       <select class="form-control" id="neighborhood_id" name="neighborhood" data-live-search="true" >
         {% for i in neig%}
