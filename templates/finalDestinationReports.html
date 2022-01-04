@@ -54,7 +54,7 @@
         </select>
       </div>
       <div class="col">
-        <label for="gender_id" class="">Genero</label>
+        <label for="gender_id" class="">Género</label>
         <select class="form-select" id="gender_id" name="gender" aria-label="Default select example">
           <option value="0" selected>Sin filtro</option>
           {% for i in genders%}
@@ -102,11 +102,11 @@
             <h5 class="card-title">Folio - {{i.specimen.folio}} </h5>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Fecha de creacion: {{i.specimen.folio[0:6]}}</li>
+            <li class="list-group-item">Fecha de creación: {{i.specimen.folio[0:6]}}</li>
             <li class="list-group-item">{{i.specimen.person.name}} {{i.specimen.person.first_lastname}}</li>
             <li class="list-group-item">Tipo : {{i.specimen.animalType.name}}</li>
             <li class="list-group-item">Especie : {{i.specimen.species.common_name}} </li>
-            <li class="list-group-item">Genero : {{i.specimen.gender.name}}</li>
+            <li class="list-group-item">Género : {{i.specimen.gender.name}}</li>
             <li class="list-group-item">Edad : {{i.specimen.age.name}}</li>
             <li class="list-group-item">Destino : {{i.destination.name}}</li>
             <li class="list-group-item">Peso: {{i.weigth}}kg, Tamano : {{i.size}}</li>
