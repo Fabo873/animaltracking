@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, datetime
 import requests
 
 def registerData():
@@ -160,7 +160,9 @@ def specimenReportsData(
 
 
   if date:
-    parameters["date"]=date
+    if date != "0":
+      date_from = datetime.strptime(date, '%Y-%m-%d')
+      parameters["date_from"]=date_from.strftime("%d-%m-%y")
   if person_id:
     parameters["person_id"]=person_id
   if type_id:
@@ -230,7 +232,10 @@ def trackingReportsData(
   data.append(specimens)
   
   if date:
-    parameters["date"]=date
+    if date != "0":
+      date_from = datetime.strptime(date, '%Y-%m-%d')
+      parameters["date_from"]=date_from.strftime("%d-%m-%y")
+
   if person_id:
     parameters["person_id"]=person_id
   if type_id:
@@ -246,7 +251,7 @@ def trackingReportsData(
 
   url_tracking = 'http://127.0.0.1:5000/tracking'
   resp = requests.get(url=url_tracking, params=parameters)
-  print(parameters)
+
   trackings = resp.json()['data']
   data.append(trackings)
 
@@ -296,7 +301,9 @@ def finalDestinationReportsData(
 
 
   if date:
-    parameters["date"]=date
+    if date != "0":
+      date_from = datetime.strptime(date, '%Y-%m-%d')
+      parameters["date_from"]=date_from.strftime("%d-%m-%y")
   if person_id:
     parameters["person_id"]=person_id
   if type_id:

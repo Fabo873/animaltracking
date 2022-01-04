@@ -117,12 +117,13 @@
             <p class="card-text">Condición: {{i.condition}}</p>
             <a href="{{url_for('tracking', folio=i.folio)}}" class="btn btn-primary btn-sm" >Seguimiento</a>
             <a href="{{url_for('destination', folio=i.folio)}}" class="btn btn-primary btn-sm" style="margin-left: 5px">Destino</a>
-            <a class="btn btn-danger btn-sm" style="margin-left: 5px">Borrar</a>
+            <type="button" class="btn btn-danger btn-sm" style="margin-left: 5px" onclick="deleteGender('specimenReports',{{i.id}})">Borrar</button>
           </div>
       </div>
     </div>
   {% endfor %}
 </div>
+
 
 <script>
   function update_family(value ) {

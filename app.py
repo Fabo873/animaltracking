@@ -195,7 +195,7 @@ def specimenReports():
             genders = filteredData[3], 
             ages = filteredData[4], 
             destinations = filteredData[5],
-            specimens = filteredData[6],
+            specimens = filteredData[6][::-1],
         )
     return render_template("specimenReports.html", 
         persons = data[0], 
@@ -204,7 +204,7 @@ def specimenReports():
         genders = data[3], 
         ages = data[4], 
         destinations = data[5],
-        specimens = data[6]
+        specimens = data[6][::-1]
     )
 # Reports
 @app.route("/trackingReports", methods=["GET","POST"])
@@ -230,7 +230,7 @@ def trackingReports():
         ages = filteredData[4], 
         destinations = filteredData[5],
         specimens = filteredData[6],
-        trackings = filteredData[7]
+        trackings = filteredData[7][::-1]
         )
     
     else:
@@ -242,7 +242,7 @@ def trackingReports():
             ages=data[4], 
             destinations=data[5],
             specimens = data[6],
-            trackings = data[7]
+            trackings = data[7][::-1]
         )
 
 # Reports
@@ -265,7 +265,7 @@ def finalDestinationReports():
             genders = filteredData[3], 
             ages = filteredData[4], 
             destinations = filteredData[5],
-            finals = filteredData[6],
+            finals = filteredData[6][::-1],
         )
     return render_template("finalDestinationReports.html", 
         persons = data[0], 
@@ -274,7 +274,7 @@ def finalDestinationReports():
         genders = data[3], 
         ages = data[4], 
         destinations = data[5],
-        finals = data[6]
+        finals = data[6][::-1]
     )
 
 
@@ -442,53 +442,72 @@ def newPerson():
 @app.route("/delete/<endPoint>/<int:id>", methods=["POST"])
 def delete(endPoint,id):
     # print(endPoint,id)
-    if request.method== "POST":
+    if request.method == "POST":
         if endPoint == 'gender':
             r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-            if r.status_code == 200:
+            if r.status_code < 399:
                 return render_template("index.html", message = "Genero borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'age':
-                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-                    if r.status_code == 200:
-                        return render_template("index.html", message = "Edad borrada", category = "success")
-                    else:
-                        return render_template("index.html", message = r.json()['message'], category = "danger")
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Edad borrada", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'destination':
             r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-            if r.status_code == 200:
+            if r.status_code < 399:
                 return render_template("index.html", message = "Destino borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'type':
-                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-                    if r.status_code == 200:
-                        return render_template("index.html", message = "Familia borrada", category = "success")
-                    else:
-                        return render_template("index.html", message = r.json()['message'], category = "danger")
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Familia borrada", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
 
         elif endPoint == 'species':
-                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-                    if r.status_code == 200:
-                        return render_template("index.html", message = "Especie borrada", category = "success")
-                    else:
-                        return render_template("index.html", message = r.json()['message'], category = "danger")
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Especie borrada", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
 
         elif endPoint == 'neighborhood':
-                    r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-                    if r.status_code == 200:
-                        return render_template("index.html", message = "Barrio borrado", category = "success")
-                    else:
-                        return render_template("index.html", message = r.json()['message'], category = "danger")
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Barrio borrado", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'person':
             r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
-            if r.status_code == 200:
+            if r.status_code < 399:
                 return render_template("index.html", message = "Persona borrada", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
+        
+        elif endPoint == 'trackingReports':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Record borrado", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
+        elif endPoint == 'specimenReports':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Record borrado", category = "success")
+            else:
+                return render_template("index.html", message = r.json()['message'], category = "danger")
+        elif endPoint == 'finalReports':
+            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            if r.status_code < 399:
+                return render_template("index.html", message = "Record borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
 # main
