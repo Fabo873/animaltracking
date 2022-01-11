@@ -5,11 +5,6 @@ from datetime import datetime
 import helper
 app = Flask(__name__)
 
-# Fechas en filtros
-# Exportar reportes en csv
-# Validaciones de campos vacíos
-# Faltas de ortografía
-# Conteo de registros
 
 @app.route("/")
 def index():
@@ -511,5 +506,6 @@ def delete(endPoint,id):
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
 # main
+
 if __name__ == '__main__':
     app.run('0.0.0.0', 8080, debug=True)
