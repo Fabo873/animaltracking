@@ -3,6 +3,7 @@ from flask.helpers import url_for
 import requests
 from datetime import datetime
 import helper
+import constants
 app = Flask(__name__)
 
 
@@ -36,7 +37,7 @@ def register():
             "size":size
             }
 
-            r = requests.post('http://127.0.0.1:5000/specimen', json = pload_specimen)
+            r = requests.post(constants.API_URL+'/specimen', json = pload_specimen)
             if r.status_code < 399:
                 pload_reception = {
                     "specimen_id":r.json()['data']['id'],
@@ -45,7 +46,7 @@ def register():
                     "neighborhood_id":request.form["neighborhood"]
                 }
 
-                r = requests.post('http://127.0.0.1:5000/reception', json = pload_reception)
+                r = requests.post(constants.API_URL+'/reception', json = pload_reception)
 
                 return render_template("index.html", message = "Registro creado satisfactoriamente!", category = "success")
             else:
@@ -81,7 +82,7 @@ def tracking(folio):
     if request.method == "POST":
         if request.form.get("destination") and request.form.get("folio") and request.form.get("date") :
             
-            url_specimen = 'http://127.0.0.1:5000/specimen?folio={}'.format(request.form.get("folio"))
+            url_specimen = constants.API_URL+'/specimen?folio={}'.format(request.form.get("folio"))
             resp = requests.get(url=url_specimen)
             specimens = resp.json()['data']
             weigth = None
@@ -105,7 +106,7 @@ def tracking(folio):
                 "destination_id":request.form["destination"]
             }
 
-            r = requests.post('http://127.0.0.1:5000/tracking', json = pload)
+            r = requests.post(constants.API_URL+'/tracking', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Seguimiento creado satisfactoriamente", category = "success")
@@ -135,7 +136,7 @@ def destination(folio):
 
     if request.method == "POST":
         if request.form.get("destination") and request.form.get("folio"):
-            url_specimen = 'http://127.0.0.1:5000/specimen?folio={}'.format(request.form["folio"])
+            url_specimen = constants.API_URL+'/specimen?folio={}'.format(request.form["folio"])
             resp = requests.get(url=url_specimen)
             specimens = resp.json()['data']
 
@@ -155,7 +156,7 @@ def destination(folio):
                 "notes":request.form["notes"]
             }
             # print(pload)
-            r = requests.post('http://127.0.0.1:5000/final', json = pload)
+            r = requests.post(constants.API_URL+'/final', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Destino final creado!", category = "success")
@@ -182,7 +183,8 @@ def specimenReports():
         gender_id = request.form["gender"]
         age_id = request.form["age"]
         destination_id = request.form["destination"]
-        filteredData = helper.specimenReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
+        folio = request.form["folio"]
+        filteredData = helper.specimenReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id, folio)
         return render_template("specimenReports.html", 
             persons = filteredData[0], 
             types = filteredData[1],
@@ -215,8 +217,9 @@ def trackingReports():
         gender_id = request.form["gender"]
         age_id = request.form["age"]
         destination_id = request.form["destination"]
+        folio = request.form["folio"]
 
-        filteredData = helper.trackingReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
+        filteredData = helper.trackingReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id, folio)
         return render_template("trackingReports.html",
         persons = filteredData[0], 
         types = filteredData[1],
@@ -252,7 +255,8 @@ def finalDestinationReports():
         gender_id = request.form["gender"]
         age_id = request.form["age"]
         destination_id = request.form["destination"]
-        filteredData = helper.finalDestinationReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id)
+        folio = request.form["folio"]
+        filteredData = helper.finalDestinationReportsData(date, person_id, type_id, species_id, gender_id, age_id, destination_id, folio)
         return render_template("finalDestinationReports.html", 
             persons = filteredData[0], 
             types = filteredData[1],
@@ -281,7 +285,7 @@ def newDestination():
         if request.form.get("destination"):
             pload = {"name":request.form["destination"]}
 
-            r = requests.post('http://127.0.0.1:5000/destination', json = pload)
+            r = requests.post(constants.API_URL+'/destination', json = pload)
             print(r.status_code)
             if r.status_code < 399:
                 return render_template("index.html", message = "Nuevo destino agregado", category = "success")
@@ -299,7 +303,7 @@ def newGender():
         if request.form.get("gender"):
             pload = {"name":request.form["gender"]}
 
-            r = requests.post('http://127.0.0.1:5000/gender', json = pload)
+            r = requests.post(constants.API_URL+'/gender', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Nuevo genero agregado", category = "success")
@@ -317,7 +321,7 @@ def newAge():
         if request.form.get("age"):
             pload = {"name":request.form["age"]}
 
-            r = requests.post('http://127.0.0.1:5000/age', json = pload)
+            r = requests.post(constants.API_URL+'/age', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Nueva edad agregada", category = "success")
@@ -335,7 +339,7 @@ def newFamily():
         if request.form.get("family"):
             pload = {"name":request.form["family"]}
 
-            r = requests.post('http://127.0.0.1:5000/type', json = pload)
+            r = requests.post(constants.API_URL+'/type', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Nueva familia agregada",category = "success")
@@ -358,7 +362,7 @@ def newSpecie():
                 "scientific_name":request.form["scientific_name"],        
             }
 
-            r = requests.post('http://127.0.0.1:5000/species', json = pload)
+            r = requests.post(constants.API_URL+'/species', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Nuevas especie agregada", category = "success")
@@ -380,7 +384,7 @@ def newNeighborhood():
                 "municipality_id":request.form["city"],        
             }
 
-            r = requests.post('http://127.0.0.1:5000/neighborhood', json = pload)
+            r = requests.post(constants.API_URL+'/neighborhood', json = pload)
 
             if r.status_code < 399:
                 return render_template("index.html", message = "Nueva colonia agregada", category = "success")
@@ -407,8 +411,8 @@ def newPerson():
                 "password": request.form["password"],
             }
 
-            r = requests.post('http://127.0.0.1:5000/user', json = pload)
-            url_users = 'http://127.0.0.1:5000/user'
+            r = requests.post(constants.API_URL+'/user', json = pload)
+            url_users = constants.API_URL+'/user'
             resp = requests.get(url=url_users)
             users = resp.json()['data']
             user_id = 0
@@ -422,7 +426,7 @@ def newPerson():
                 "first_lastname": request.form["first_lastname"],
                 "second_lastname": request.form["second_lastname"]
                 }
-                r = requests.post('http://127.0.0.1:5000/person', json = pload)
+                r = requests.post(constants.API_URL+'/person', json = pload)
                 if r.status_code < 399:
                     return render_template("index.html", message = "Nueva persona creada",category = "success")
                 else:
@@ -439,68 +443,68 @@ def delete(endPoint,id):
     # print(endPoint,id)
     if request.method == "POST":
         if endPoint == 'gender':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Genero borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'age':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Edad borrada", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'destination':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Destino borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'type':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Familia borrada", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
 
         elif endPoint == 'species':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Especie borrada", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
 
         elif endPoint == 'neighborhood':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Barrio borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'person':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Persona borrada", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         
         elif endPoint == 'trackingReports':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Record borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         elif endPoint == 'specimenReports':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Record borrado", category = "success")
             else:
                 return render_template("index.html", message = r.json()['message'], category = "danger")
         elif endPoint == 'finalReports':
-            r = requests.delete('http://127.0.0.1:5000/'+endPoint+'/'+str(id))
+            r = requests.delete(constants.API_URL+'/'+endPoint+'/'+str(id))
             if r.status_code < 399:
                 return render_template("index.html", message = "Record borrado", category = "success")
             else:

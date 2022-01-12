@@ -1,49 +1,50 @@
 from datetime import date, datetime
 import requests
+import constants
 
 def registerData():
   data = []
-  url_person = 'http://127.0.0.1:5000/person'
+  url_person = constants.API_URL+'/person'
   resp = requests.get(url=url_person)
   persons = resp.json()['data']
   data.append(persons)
 
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
 
-  url_species = 'http://127.0.0.1:5000/species'
+  url_species = constants.API_URL+'/species'
   resp = requests.get(url=url_species)
   species = resp.json()['data']
   data.append(species)
 
-  url_gender = 'http://127.0.0.1:5000/gender'
+  url_gender = constants.API_URL+'/gender'
   resp = requests.get(url=url_gender)
   genders = resp.json()['data']
   data.append(genders)
 
-  url_age = 'http://127.0.0.1:5000/age'
+  url_age = constants.API_URL+'/age'
   resp = requests.get(url=url_age)
   ages = resp.json()['data']
   data.append(ages)
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
 
-  url_states = 'http://127.0.0.1:5000/state'
+  url_states = constants.API_URL+'/state'
   resp = requests.get(url=url_states)
   states = resp.json()['data']
   data.append(states)
 
-  url_municipalities = 'http://127.0.0.1:5000/municipality'
+  url_municipalities = constants.API_URL+'/municipality'
   resp = requests.get(url=url_municipalities)
   cities = resp.json()['data']
   data.append(cities)
 
-  url_neig = 'http://127.0.0.1:5000/neighborhood'
+  url_neig = constants.API_URL+'/neighborhood'
   resp = requests.get(url=url_neig)
   neig = resp.json()['data']
   data.append(neig)
@@ -53,12 +54,12 @@ def registerData():
 def trackingData():
   data = []
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
 
-  url_specimen = 'http://127.0.0.1:5000/specimen'
+  url_specimen = constants.API_URL+'/specimen'
   resp = requests.get(url=url_specimen)
   specimens = resp.json()['data']
   data.append(specimens)
@@ -68,12 +69,12 @@ def trackingData():
 def destinationData():
   data = []
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
 
-  url_specimen = 'http://127.0.0.1:5000/specimen'
+  url_specimen = constants.API_URL+'/specimen'
   resp = requests.get(url=url_specimen)
   specimens = resp.json()['data']
   data.append(specimens)
@@ -84,12 +85,12 @@ def speciesData():
   
   data = []
   
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
 
-  url_species = 'http://127.0.0.1:5000/species'
+  url_species = constants.API_URL+'/species'
   resp = requests.get(url=url_species)
   species = resp.json()['data']
   data.append(species)
@@ -99,17 +100,17 @@ def speciesData():
 def neighborhoodData():
   
   data = []
-  url_states = 'http://127.0.0.1:5000/state'
+  url_states = constants.API_URL+'/state'
   resp = requests.get(url=url_states)
   states = resp.json()['data']
   data.append(states)
 
-  url_municipalities = 'http://127.0.0.1:5000/municipality'
+  url_municipalities = constants.API_URL+'/municipality'
   resp = requests.get(url=url_municipalities)
   cities = resp.json()['data']
   data.append(cities)
 
-  url_neig = 'http://127.0.0.1:5000/neighborhood'
+  url_neig = constants.API_URL+'/neighborhood'
   resp = requests.get(url=url_neig)
   neig = resp.json()['data']
   data.append(neig)
@@ -123,37 +124,38 @@ def specimenReportsData(
     species_id:int = None, 
     gender_id:int = None, 
     age_id:int = None,
-    destination_id:int = None
+    destination_id:int = None,
+    folio:str = None
   ):
   data = []
   parameters = {}
 
-  url_person = 'http://127.0.0.1:5000/person'
+  url_person = constants.API_URL+'/person'
   resp = requests.get(url=url_person)
   persons = resp.json()['data']
   data.append(persons)
 
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
 
-  url_species = 'http://127.0.0.1:5000/species'
+  url_species = constants.API_URL+'/species'
   resp = requests.get(url=url_species)
   species = resp.json()['data']
   data.append(species)
 
-  url_gender = 'http://127.0.0.1:5000/gender'
+  url_gender = constants.API_URL+'/gender'
   resp = requests.get(url=url_gender)
   genders = resp.json()['data']
   data.append(genders)
 
-  url_age = 'http://127.0.0.1:5000/age'
+  url_age = constants.API_URL+'/age'
   resp = requests.get(url=url_age)
   ages = resp.json()['data']
   data.append(ages)
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
@@ -175,8 +177,10 @@ def specimenReportsData(
     parameters["age_id"]=age_id
   if destination_id:
     parameters["destination_id"]=destination_id
+  if folio:
+    parameters["folio"]=folio
   
-  url_specimen = 'http://127.0.0.1:5000/specimen'
+  url_specimen = constants.API_URL+'/specimen'
   resp = requests.get(url=url_specimen, params=parameters)
   specimens = resp.json()['data']
   data.append(specimens)
@@ -190,43 +194,44 @@ def trackingReportsData(
     species_id:int = None, 
     gender_id:int = None, 
     age_id:int = None,
-    destination_id:int = None
+    destination_id:int = None,
+    folio:str = None
   ):
   
   data = []
   parameters = {}
   
-  url_person = 'http://127.0.0.1:5000/person'
+  url_person = constants.API_URL+'/person'
   resp = requests.get(url=url_person)
   persons = resp.json()['data']
   data.append(persons)
 
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
 
-  url_species = 'http://127.0.0.1:5000/species'
+  url_species = constants.API_URL+'/species'
   resp = requests.get(url=url_species)
   species = resp.json()['data']
   data.append(species)
 
-  url_gender = 'http://127.0.0.1:5000/gender'
+  url_gender = constants.API_URL+'/gender'
   resp = requests.get(url=url_gender)
   genders = resp.json()['data']
   data.append(genders)
 
-  url_age = 'http://127.0.0.1:5000/age'
+  url_age = constants.API_URL+'/age'
   resp = requests.get(url=url_age)
   ages = resp.json()['data']
   data.append(ages)
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
 
-  url_specimen = 'http://127.0.0.1:5000/specimen'
+  url_specimen = constants.API_URL+'/specimen'
   resp = requests.get(url=url_specimen, params=parameters)
   specimens = resp.json()['data']
   data.append(specimens)
@@ -248,8 +253,10 @@ def trackingReportsData(
     parameters["age_id"]=age_id
   if destination_id:
     parameters["destination_id"]=destination_id
+  if folio:
+    parameters["folio"]=folio
 
-  url_tracking = 'http://127.0.0.1:5000/tracking'
+  url_tracking = constants.API_URL+'/tracking'
   resp = requests.get(url=url_tracking, params=parameters)
 
   trackings = resp.json()['data']
@@ -264,37 +271,38 @@ def finalDestinationReportsData(
     species_id:int = None, 
     gender_id:int = None, 
     age_id:int = None,
-    destination_id:int = None
+    destination_id:int = None,
+    folio:str = None
   ):
   data = []
   parameters = {}
 
-  url_person = 'http://127.0.0.1:5000/person'
+  url_person = constants.API_URL+'/person'
   resp = requests.get(url=url_person)
   persons = resp.json()['data']
   data.append(persons)
 
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
 
-  url_species = 'http://127.0.0.1:5000/species'
+  url_species = constants.API_URL+'/species'
   resp = requests.get(url=url_species)
   species = resp.json()['data']
   data.append(species)
 
-  url_gender = 'http://127.0.0.1:5000/gender'
+  url_gender = constants.API_URL+'/gender'
   resp = requests.get(url=url_gender)
   genders = resp.json()['data']
   data.append(genders)
 
-  url_age = 'http://127.0.0.1:5000/age'
+  url_age = constants.API_URL+'/age'
   resp = requests.get(url=url_age)
   ages = resp.json()['data']
   data.append(ages)
 
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
@@ -316,8 +324,10 @@ def finalDestinationReportsData(
     parameters["age_id"]=age_id
   if destination_id:
     parameters["destination_id"]=destination_id
+  if folio:
+    parameters["folio"]=folio
   
-  url_final = 'http://127.0.0.1:5000/final'
+  url_final = constants.API_URL+'/final'
   resp = requests.get(url=url_final, params=parameters)
   finals = resp.json()['data']
   data.append(finals)
@@ -327,7 +337,7 @@ def newGenderData():
   
   data = []
   
-  url_gender = 'http://127.0.0.1:5000/gender'
+  url_gender = constants.API_URL+'/gender'
   resp = requests.get(url=url_gender)
   genders = resp.json()['data']
   data.append(genders)
@@ -338,7 +348,7 @@ def newAgeData():
   
   data = []
   
-  url_age = 'http://127.0.0.1:5000/age'
+  url_age = constants.API_URL+'/age'
   resp = requests.get(url=url_age)
   ages = resp.json()['data']
   data.append(ages)
@@ -348,7 +358,7 @@ def newAgeData():
 def newDestinationData():
   data = []
   
-  url_destination = 'http://127.0.0.1:5000/destination'
+  url_destination = constants.API_URL+'/destination'
   resp = requests.get(url=url_destination)
   destinations = resp.json()['data']
   data.append(destinations)
@@ -358,7 +368,7 @@ def newDestinationData():
 def newTypeData():
   data = []
   
-  url_type = 'http://127.0.0.1:5000/type'
+  url_type = constants.API_URL+'/type'
   resp = requests.get(url=url_type)
   types = resp.json()['data']
   data.append(types)
@@ -368,12 +378,12 @@ def newTypeData():
 def newPersonData():
   data = []
   
-  url_type = 'http://127.0.0.1:5000/person'
+  url_type = constants.API_URL+'/person'
   resp = requests.get(url=url_type)
   persons = resp.json()['data']
   data.append(persons)
 
-  url_type = 'http://127.0.0.1:5000/user'
+  url_type = constants.API_URL+'/user'
   resp = requests.get(url=url_type)
   users = resp.json()['data']
   data.append(users)
