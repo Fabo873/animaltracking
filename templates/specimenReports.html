@@ -1,22 +1,23 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="register-title-div">
+  <h2 class="register-title">Reportes de espécimen</h2>
+</div>
+
 <!-- Filters -->
-<div style="margin-bottom: 100px;">
+<div style="margin-bottom: 50px; margin-top: 20px;">
   <form action="#" method="post">
     <div class="row">
       <div class="col">
         <label for="date_id" class="">Fecha</label>
-        <select 
-          class="form-select" 
-          id="date_id"
-          name="date"  
-          >
-          <option value="0" selected>Sin filtro</option>
-          {% for i in trackings%}
-            <option value="{{i.date}}">{{i.date}}</option>
-          {% endfor %}
-        </select>
+          <input
+            type="date"
+            class="form-control"
+            name="date"
+            id="date_id"
+            placeholder="Fecha"
+          />
       </div>
       <div class="col">
         <label for="person_id" class="">Persona</label>
@@ -87,7 +88,9 @@
       <div class="col-auto">
         <button type="submit" name="action" value="Filter" class="btn btn-success mb-3">Filtrar</button>
       </div>
-      
+      <div class="col-auto">
+        <a href="http://127.0.0.1:5000/specimen/csv" class="btn btn-success mb-3" style="margin-left: 5px">Descargar Todo</a>
+      </div>
     </div>
   </form>
 </div>
@@ -104,7 +107,7 @@
             <h5 class="card-title">Folio - {{i.folio}} </h5>
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item">Fecha de creación: {{i.folio[0:6]}}</li>
+            <li class="list-group-item">Fecha de creación: {{i.date}}</li>
             <li class="list-group-item">{{i.person.name}} {{i.person.first_lastname}}</li>
             <li class="list-group-item">Tipo : {{i.animalType.name}}</li>
             <li class="list-group-item">Especie : {{i.species.common_name}} </li>
@@ -117,7 +120,6 @@
             <p class="card-text">Condición: {{i.condition}}</p>
             <a href="{{url_for('tracking', folio=i.folio)}}" class="btn btn-primary btn-sm" >Seguimiento</a>
             <a href="{{url_for('destination', folio=i.folio)}}" class="btn btn-primary btn-sm" style="margin-left: 5px">Destino</a>
-            <type="button" class="btn btn-danger btn-sm" style="margin-left: 5px" onclick="deleteGender('specimenReports',{{i.id}})">Borrar</button>
           </div>
       </div>
     </div>

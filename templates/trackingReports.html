@@ -1,22 +1,22 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<div class="register-title-div">
+  <h2 class="register-title">Reportes de seguimientos</h2>
+</div>
 <!-- Filters -->
-<div style="margin-bottom: 100px;">
+<div style="margin-bottom: 50px; margin-top: 20px;">
   <form action="#" method="post">
     <div class="row">
       <div class="col">
         <label for="date_id" class="">Fecha</label>
-        <select 
-          class="form-select" 
+        <input
+          type="date"
+          class="form-control"
+          name="date"
           id="date_id"
-          name="date"  
-          >
-          <option value="0" selected>Sin filtro</option>
-          {% for i in trackings%}
-            <option value="{{i.date}}">{{i.date}}</option>
-          {% endfor %}
-        </select>
+          placeholder="Fecha"
+        />
       </div>
       <div class="col">
         <label for="person_id" class="">Persona</label>
@@ -87,7 +87,9 @@
       <div class="col-auto">
         <button type="submit" name="action" value="Filter" class="btn btn-success mb-3">Filtrar</button>
       </div>
-      
+      <div class="col-auto">
+        <a href="http://127.0.0.1:5000/tracking/csv" class="btn btn-success mb-3" style="margin-left: 5px">Descargar Todo</a>
+      </div>
     </div>
   </form>
 </div>
@@ -115,7 +117,6 @@
           </ul>
           <div class="card-body">
             <p class="card-text">Condición: {{i.condition}}</p>
-            <type="button" class="btn btn-danger btn-sm" style="margin-left: 5px" onclick="deleteGender('trackingReports',{{i.id}})">Borrar reporte</button>
           </div>
       </div>
     </div>
