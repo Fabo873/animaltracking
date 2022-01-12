@@ -9,6 +9,16 @@
   <form action="#" method="post">
     <div class="row">
       <div class="col">
+        <label for="folio" class="">Folio</label>
+        <input
+          type="text"
+          class="form-control"
+          name="folio"
+          id="folio"
+          placeholder="Folio"
+        />
+      </div>
+      <div class="col">
         <label for="date_id" class="">Fecha</label>
         <input
           type="date"
@@ -107,13 +117,12 @@
           </div>
           <ul class="list-group list-group-flush">
             <li class="list-group-item">Fecha de creación : {{i.date}}</li>
-            <li class="list-group-item">{{i.specimen.person.name}} {{i.specimen.person.first_lastname}}</li>
             <li class="list-group-item">Tipo : {{i.specimen.animalType.name}}</li>
             <li class="list-group-item">Especie : {{i.specimen.species.common_name}} </li>
             <li class="list-group-item">Género : {{i.specimen.gender.name}}</li>
             <li class="list-group-item">Edad : {{i.specimen.age.name}}</li>
             <li class="list-group-item">Destino : {{i.destination.name}}</li>
-            <li class="list-group-item">Peso: {{i.weigth}}kg, Tamano : {{i.size}}</li>
+            <li class="list-group-item">Peso: {{i.weigth}} g, Tamano : {{i.size}} cm</li>
           </ul>
           <div class="card-body">
             <p class="card-text">Condición: {{i.condition}}</p>
